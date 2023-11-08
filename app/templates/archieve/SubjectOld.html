@@ -1,0 +1,42 @@
+{% extends "app/Index.html" %}
+{% load static %}
+
+{% block content %}
+
+    <a href="{% url 'app:createSubject' %}" class="btn btn-outline-secondary btn-sm">新增科目</a>
+    <table class="table table-striped" style="width: 90vw;">
+    <table class="table">
+
+    <thead>
+        <tr>
+        {% comment %} <th scope="col">#</th> {% endcomment %}
+        <th scope="col"></th>
+        <th scope="col">科目ID
+        </th>
+        <th scope="col">科目</th>
+        <th scope="col">修改科目</th>
+        <th scope="col">刪除科目</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects %}
+            <tr>
+                <td scope="col"></td>
+                {% comment %} <td scope="col">{{ subject.pk }}</td> {% endcomment %}
+                <td scope="col">{{ subject.id }}</td>
+                <td scope="col">{{ subject.subjectName }}</td>
+                <td scope="col"><a href="{% url 'app:updateSubjects' pk=subject.pk %}"><button class="btn btn-outline-secondary btn-sm update-subject-btn">
+                    修改科目</button></a></td>
+
+                <td scope="col"><a href="{% url 'app:deleteSubjects' pk=subject.pk %}"><button
+                    class="btn btn-outline-secondary btn-sm delete-subject-btn">
+                    刪除科目
+                </button></a></td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
+

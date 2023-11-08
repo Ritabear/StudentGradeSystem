@@ -1,0 +1,46 @@
+{% extends 'app/Index.html' %}
+
+{% block content %}
+
+<h1>Login</h1>
+<br />
+
+
+{% comment %} <form action="{% url "authen:login" %}" method="POST"> {% endcomment %}
+<form action="{% url "authen:login" %}" method="POST">
+  {% csrf_token %}
+
+  <form>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Username</label>
+      <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" name="password">
+    </div>
+
+
+    <input type="submit" value="Submit" class="btn btn-secondary">
+
+  </form>
+
+
+  <br /><br />
+  {% endblock %}
+{% comment %}
+
+
+<WSGIRequest: GET '/authen/login_user/'>
+[01/Nov/2023 08:42:14] "GET /authen/login_user/ HTTP/1.1" 200 5141
+
+
+"post"
+<WSGIReq.uest: POST '/authen/login_user/'>
+[01/Nov/2023 08:43:42] "POST /authen/login_user/ HTTP/1.1" 200 5143
+
+
+
+
+{% endcomment %}

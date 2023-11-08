@@ -1,0 +1,28 @@
+{% for subject in subjects %}
+<tr>
+  <td scope="col"></td>
+  {% comment %} <td scope="col">{{ subject . pk }}</td> {% endcomment %}
+  <td scope="col">{{ subject.id }}</td>
+  <td scope="col">{{ subject.subjectName }}</td>
+  <td scope="col">
+
+  <td scope="col">
+    <a href="#" class="btn btn-outline-secondary btn-sm" hx-get="{% url 'app:updateSubjects' pk=subject.id %}"
+      hx-trigger="click" hx-target="closest tr" hx-swap="innerHTML">
+      修改科目
+    </a>
+  </td>
+
+
+
+  <td scope="col">
+    <a
+      href="#"
+      class="btn btn-outline-secondary btn-sm" hx-delete="{% url 'app:deleteSubjects' pk=subject.id %}"
+      hx-trigger="click" hx-target="closest tr" hx-swap="outerHTML">
+      刪除科目
+    </a>
+  </td>
+
+</tr>
+{% endfor %}

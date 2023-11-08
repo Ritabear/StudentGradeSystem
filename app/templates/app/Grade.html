@@ -1,0 +1,42 @@
+{% extends "app/Index.html" %}
+{% load static %}
+
+{% block content %}
+    {% comment %} <p> {{ grades }} </p> {% endcomment %}
+     <a href="{% url 'app:createGrade' %}" class="btn btn-outline-secondary btn-sm">新增成績</a>
+    <table class="table">
+
+    <thead>
+        <tr>
+        {% comment %} <th scope="col">#</th> {% endcomment %}
+        <th scope="col"></th>
+        <th scope="col">ID</th>
+        <th scope="col">姓名</th>
+        <th scope="col">學期</th>
+        <th scope="col">科目</th>
+        <th scope="col">成績</th>
+        <th scope="col">更改</th>
+        <th scope="col">刪除</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grade in grades %}
+            <tr>
+                <td scope="col"></td>
+                <td scope="col">{{ grade.id }}</td>
+                <td scope="col">{{ grade.student }}</td>
+                <td scope="col">{{ grade.semester }}</td>
+                <td scope="col">{{ grade.subject }}</td>
+                <td scope="col">{{ grade.grade }}</td>
+                <td scope="col"><a href="{% url 'app:updateGrades' pk=grade.pk %}"><button class="btn btn-outline-secondary btn-sm update-grade-btn">
+                    修改成績</button></a></td>
+                <td scope="col"><a href="{% url 'app:deleteGrades' pk=grade.pk %}"><button class="btn btn-outline-secondary btn-sm delete-grade-btn">
+                    刪除成績
+                </button></a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
+
+

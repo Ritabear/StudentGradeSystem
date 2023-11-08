@@ -1,0 +1,80 @@
+{% comment %} {% extends "Index.html" %}
+
+{% block nav %} {% endcomment %}
+{% load static %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url "home" %}">Navbar</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url "app:index" %}"> System <span class="sr-only">(current)</span></a>
+        </li>
+
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'app:listGrades' %}" class="nav-link">所有成績</a></li>
+        {% endif %}
+
+        <li><a href="{% url 'app:listSubjects' %}" class="nav-link">所有科目</a></li>
+
+        <li><a href="{% url 'app:listStudents' %}" class="nav-link">所有學生</a></li>
+
+
+        <li class="has-children">
+          {% if user.is_authenticated %}
+          {% comment %} {% if user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admin_approval' %}">Admin</a>
+        </li>
+        {%endif %} {% endcomment %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'authen:logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'authen:register' %}">Register</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'authen:login' %}">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <form id="searchform" class="form-inline my-2 my-lg-0" action="{% url 'app:search' %}" method="POST" >
+    <div class="row">
+        <div class="col">
+        <input class="form-control mr-sm-2" name="name" type="search" placeholder="search" aria-label="search" id="search" />
+        </div>
+        <div id="choices" class="col">
+        </div>
+        <div class="col">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+        </button>
+        </div>
+    </form>
+    <script>
+      document.querySelector("#searchform").addEventListener("change", async (evt) => {
+        console.log(evt);
+        await fetch("http://127.0.0.1:8082/app/api/search?name=" + evt.target.value).then(rep => rep.json()).then(
+          rep => {
+            s = ""
+            for (name of rep.students) {
+              s += "<input type='checkbox' name='name' value='" + name + "''> " + name + "</input>"
+            }
+            document.querySelector("#choices").innerHTML = s
+            // evt.target.value = rep.students[0]
+          }
+        )})
+    </script>
+
+    </div>
+  </nav>
+{% comment %} {% endblock nav %} {% endcomment %}

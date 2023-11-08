@@ -1,0 +1,18 @@
+
+<td>
+<form hx-post="{% url 'app:updateSubjects' pk=subject.pk %}" hx-target="closest tr" hx-trigger="click" hx-swap="outerHTML" >
+
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+</td>
+
+
+{% comment %}
+<td>
+<form method="POST" action="{% url 'app:updateSubjects' pk=subject.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-outline-primary">確認變更</button>
+</form>
+</td> {% endcomment %}

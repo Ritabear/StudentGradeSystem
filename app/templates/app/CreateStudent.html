@@ -1,0 +1,57 @@
+{% extends "app/Index.html" %}
+
+
+{% block content %}
+<h1>新增學生</h1>
+
+{% comment %} <form method="post" action="{% url 'app:createStudentForm' %}" enctype="multipart/form-data">
+  {% endcomment %}
+<form method="post" action="{% url 'app:createStudent' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% comment %}
+    方法1. 新增學生
+    <table>
+      {{ form.as_table }}
+    </table>
+    {% endcomment %}
+
+    {% comment %}
+    方法2 新增學生
+    {% for item in form %}
+    <div>
+      {{ item.label_tag }}
+      {{ item }}
+    </div>
+    {% endfor %}
+
+    PS. 這邊的item是指form裡面的每一個欄位，label_tag是指欄位的名稱，item是指欄位的內容
+    PS. 下面是方法3. 新增學生自訂欄位
+    {% endcomment %}
+
+    <div class="mb-5">
+      <label for="exampleInputEmail1" class="form-label">名字</label>
+      <input type="text" class="form-control" placeholder="名字" name="name">
+    </div>
+
+    <div class="mb-5">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="email">
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+
+      <div></div>
+      <div class="mb-5">
+        <label for="exampleInputEmail1" class="form-label">電話號碼</label>
+        <input type="text" class="form-control" placeholder="電話號碼" name="phoneNumber">
+      </div>
+
+
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+      </div>
+      <div>
+        <button type="submit" value="Save" class="btn btn-primary" value="createStudent">Submit</button>
+      </div>
+
+</form>
+{% endblock %}
