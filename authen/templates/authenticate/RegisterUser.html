@@ -14,7 +14,7 @@
 <br/>
 
 
-		<form action="{% url 'authen:register' %}" method=POST>
+		<form action="{% url 'authen:register' %}" method="POST">
 			{% csrf_token %}
 
 			{{ form.as_p }}

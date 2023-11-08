@@ -1,5 +1,7 @@
 from ast import List
+from calendar import c
 from collections.abc import Sequence
+import json
 from re import sub
 import re
 import stat
@@ -14,10 +16,12 @@ from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from app.models import Student, Subject, Grade
+from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from app.forms import CreateStudentForm, CreateSubjectForm, CreateGradeForm
+from django.db.models import Q
 
-
+PAGINATE_NUM = 10
 def homePage(request):
     return render(request, "app/Base.html")
 
@@ -53,13 +57,11 @@ def updateSubject(request, pk):
     if request.method == "POST":
         form = CreateSubjectForm(request.POST, instance=obj)
         if form.is_valid():
-            # print(form)
             form.save()
 
             context = {
                 "subjects": Subject.objects.filter(id=pk),
             }
-            print(context)
 
             return render(request, "app/SubjectListComponet.html", context=context)
 
@@ -84,9 +86,8 @@ def updateSubject(request, pk):
 #         "subjects": subjects
 #     }
 #     return render(request, 'app/Subject.html', context)
-from django.db.models import Q
 
-
+# ! search也可以跟 ListView 合併，這樣可以少一個.html
 def searchStudent(request):
     name = request.POST.get("name", None)
     students = Student.objects.filter(Q(grade__semester__contains=name) | Q(name__contains=name))
@@ -102,20 +103,26 @@ def searchStudent(request):
 
 
 def searchComplete(request):
-    name = request.GET.get("name", None)
+    # if request.is_ajax():
+    if request.method == "GET":
+        query = request.GET.get("term", "")
+        students = Student.objects.filter(name__icontains=query)
+        results = []
+        for student in students:
+            place_json = student.name
+            results.append(place_json)
+        # data = json.dumps(results)
+        return JsonResponse(results, safe=False) #! 返回list就好
+        # return HttpResponse(data, mimetype= "application/json")
+    return render(request, 'app/Search.html')
 
-    # if name:
-    allInfo = Student.objects.filter(Q(grade__semester__contains=name) | Q(name__contains=name))
-    return JsonResponse({"students": [i.name for i in allInfo]},status=200)
-
-    # return render(request, 'app/Search.html')
-
-# class ProductAutocomplete(View):
-#     def get(self, request):
-#         query = request.GET.get('term', '')
-#         products = Product.objects.filter(name__icontains=query)[:10]
-#         results = [product.name for product in products]
-#         return JsonResponse(results, safe=False)
+class StudentAutocomplete(View):
+    def get(self, request):
+        query = request.GET.get('term', '')
+        students = Student.objects.filter(name__icontains=query)[:10]
+        results = [student.name for student in students]
+        print(results)
+        return JsonResponse(results, safe=False)
 
 
 class ListGradeView(ListView):
@@ -144,7 +151,7 @@ class UpdateGradeView(UpdateView):
     #     context = super().get_context_data(**kwargs)
     #     context["headerNames"] = [subject.subjectName for subject in Subject.objects.all()]
     #     return context
-
+    #! 順序要換一下，了解form_valid
     def form_valid(self, form):
         messages.success(self.request, "更改成功")
         return super().form_valid(form)
@@ -157,7 +164,7 @@ class DeleteGradeView(LoginRequiredMixin,DeleteView):
 
 
 class ListStudentView(ListView):
-    paginate_by = 9
+    paginate_by = PAGINATE_NUM
     model = Student
     # template_name = 'templates/student.html'
     # templates 已經在settins 有定義了
@@ -201,7 +208,8 @@ class UpdateStudentView(UpdateView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["headerNames"] = [
-            subject.subjectName for subject in Subject.objects.all()
+            # subject.subjectName for subject in Subject.objects.all() # 只要名字不需要.all()
+            subject for subject in Subject.objects.values_list() # 只要名字不需要.all()
         ]
         return context
 
@@ -225,7 +233,7 @@ class ListSubjectView(ListView):
     def get_ordering(self) -> Sequence[str]:
         ordering = self.request.GET.get('ordering', 'id')
         return [ordering]
-    
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["SUBJECTS_API_URL"] = reverse_lazy("app:listSubjects")
@@ -261,7 +269,6 @@ class DeleteSubjectView(LoginRequiredMixin,DeleteView):
         messages.success(self.request, "The subject was deleted successfully.")
         return super().form_valid(form)
 
-    #? FBV
 
 
 
