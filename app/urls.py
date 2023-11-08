@@ -33,8 +33,8 @@ urlpatterns = [
     path("subjects/delete/<int:pk>/", views.DeleteSubjectView.as_view(), name="deleteSubjects"),
 
 
-    path('students/search/', views.searchStudent, name='search'),
+    # path('students/search/', views.searchStudent, name='search'),
     #re
     # path('search/', views.searchStudent, name='search'),
-    path('api/search', views.searchComplete, name='searchComplete'),
+    path('api/search/', views.searchComplete, name='searchComplete'),
 ]

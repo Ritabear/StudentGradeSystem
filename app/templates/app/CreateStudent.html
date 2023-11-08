@@ -6,7 +6,7 @@
 
 {% comment %} <form method="post" action="{% url 'app:createStudentForm' %}" enctype="multipart/form-data">
   {% endcomment %}
-<form method="post" action="{% url 'app:createStudent' %}" enctype="multipart/form-data">
+<form method="POST" action="{% url 'app:createStudent' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {% comment %}
     方法1. 新增學生

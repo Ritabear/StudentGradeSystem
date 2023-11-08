@@ -1,29 +1,25 @@
 {% extends "app/Base.html" %}
 
-  <!-- Our content -->
-  <h1>成績管理系統</h1>
+{% block index %}
+<!-- Our content -->
+<h1>成績管理系統</h1>
 
-  {% block content %}{% endblock %}
-  <div class="container">
-    {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    {% endif %}
 
-    <!-- Boostrap JS CDN -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
-    {% comment %} <script>
+{% block content %}{% endblock %}
+<div class="container">
+    {% if messages %} {% for message in messages %} {{ message }} {% endfor %} {% endif %}
+
+    {% comment %}
+    <script>
         $(function() {
             $("#search").autocomplete({
                 source: "{% url 'app:searchComplete' %}",
                 minLength: 2, // Minimum characters before triggering autocomplete
             });
         });
-    </script> {% endcomment %}
-
-
-
+    </script>
+    {% endcomment %}
     {% block replenishJS %}{% endblock %}
+</div>
+{% endblock %}
