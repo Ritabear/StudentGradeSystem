@@ -29,15 +29,30 @@
         }
     });
     */
-
+    let divSemester = document.createElement("div");
+    let divGrade = document.createElement("div");
     document.querySelector("#form").addEventListener("change", evt =>{
         let grade = document.querySelector("#id_grade")
         let semester = document.querySelector("#id_semester")
         let semesterValue = semester.value;
         let semesterParts = semesterValue.split('-');
         let numericPart = parseInt(semesterParts[0], 10);
-        if (grade.value > 100 || grade.value < 0 || semesterParts.length !== 2 || numericPart >= 100 || numericPart <= 200)
+        if (grade.value > 100 || grade.value < 0 || semesterParts.length !== 2 || numericPart <= 100 || numericPart >= 200) {
+            if (grade.value > 100 || grade.value < 0){
+                //$("#id_grade").css('borderColor','red');
+                //grade.style.display = "none"
+                grade.style.borderColor = "red"
+                document.querySelectorAll("form p")[3].append(divGrade)
+                divGrade.innerHTML = "請輸入正確的成績"
+            }
+            if (semesterParts.length !== 2 || numericPart <= 100 || numericPart >= 200){
+                semester.style.borderColor = "red"
+                document.querySelectorAll("form p")[1].append(divSemester)
+                divSemester.innerHTML = "請輸入正確的學期"
+            }
             document.querySelector("#update").classList.add("disabled")
+
+        }
         else
             document.querySelector("#update").classList.remove("disabled")
     });
