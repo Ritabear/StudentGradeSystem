@@ -27,7 +27,7 @@ class Command(BaseCommand):
                     **data
                 )
                 Subject.save()
-            except as e:
+            except Exception as e:
                 self.stdout.write(f"{e}")
                 CommandError('失敗！')
             self.stdout.write(self.style.SUCCESS(f'Successfully create user {faker.license_plate()}'))
