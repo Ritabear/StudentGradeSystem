@@ -21,6 +21,9 @@
     <tbody class="infinite-container">
     </tbody>
 </table>
+<div id='load' style="height: 200px; background: green display:none">
+    Loading ...........
+</div>
 
 {% comment %} {% for stuedent in page_obj %}
     {# Each "stuedent" is a stuedent model object. #}
@@ -57,12 +60,15 @@
         // 設定每次滾動觸發的函數
         $(window).mouseover(function () {
             // 如果滾動到底部
-            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
                 // 加載新資料的邏輯，可以是Ajax請求或其他方式
                 if (page_load) {
                     return
                 }
+                document.querySelector("#load").style.background = "red"
+
                 page_load = true
+                document.querySelector(".infinite-container")
                 $.ajax({
                     url: "{% url 'app:listStudents1' %}",
                     data: {
@@ -76,10 +82,12 @@
                         page += 1
                         //console.log(data);
                         page_load = false
+                        document.querySelector("#load").style.display="none";
                     },
                     error: function () {
                         console.error("Error loading more data.");
                         page_load = false
+                        document.querySelector("#load").style.background = "blue"
                     }
                 });
             }

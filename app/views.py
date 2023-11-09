@@ -235,6 +235,7 @@ class DeleteStudentView(LoginRequiredMixin, DeleteView):
 
 # createSubject
 class ListSubjectView(ListView):
+    paginate_by = PAGINATE_NUM
     model = Subject
     template_name = 'app/Subject.html'
     context_object_name = "subjects"
