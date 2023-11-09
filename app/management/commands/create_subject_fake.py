@@ -3,35 +3,33 @@ from django.core.management.base import BaseCommand, CommandError, CommandParser
 from django.contrib.auth.hashers import make_password
 from faker import Faker
 
-from app.models import Student
+from app.models import Subject
 
 class Command(BaseCommand):
-    help = "建立 fake 學生"
+    help = "建立 fake 科目"
 
     def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument('num', nargs='+', type=int)
 
     def handle(self, *args: Any, **options: Any):
-        number = options.get('num')[0]   # 注意：此处options.get('num')是一个列表
+        number = options.get('num')[0]
         if number is None:
             number = 3
         # password = make_password('123456')
         faker = Faker(['zh_TW'])
         for _ in range(int(number)):
             data = {
-                'name': faker.name_male(),
-                'phoneNumber': faker.phone_number(),
-                'email': faker.email(),
-                # 'password': password,
-                # 'is_superuser': True,
+                'subjectName': faker.license_plate(),
+
             }
             try:
-                Student.objects.create(
+                Subject.objects.create(
                     **data
                 )
-                Student.save()
-            except:
+                Subject.save()
+            except as e:
+                self.stdout.write(f"{e}")
                 CommandError('失敗！')
-            self.stdout.write(self.style.SUCCESS(f'Successfully create user {faker.name_male()}'))
+            self.stdout.write(self.style.SUCCESS(f'Successfully create user {faker.license_plate()}'))
             #! self.stdout.write vs print
-# python manage.py create_student_fake 3
+# python manage.py create_Subject_fake 3

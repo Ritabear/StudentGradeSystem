@@ -6,7 +6,7 @@
 
 
 
-{% block content %}{% endblock %}
+
 <div class="container">
     {% if messages %} {% for message in messages %} {{ message }} {% endfor %} {% endif %}
 
@@ -20,6 +20,7 @@
         });
     </script>
     {% endcomment %}
+    {% block content %}{% endblock %}
     {% block replenishJS %}{% endblock %}
 </div>
 {% endblock %}

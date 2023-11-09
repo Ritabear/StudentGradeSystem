@@ -1,0 +1,16 @@
+{% for student in students %}
+    <tr>
+        <td scope="col"></td>
+        <td scope="col">{{ student.id }}</td>
+        <td scope="col">{{ student.name }}</td>
+        <td scope="col">{{ student.phoneNumber }}</td>
+        <td scope="col">{{ student.email }}</td>
+        <td scope="col"><a href="{% url 'app:updateStudents' pk=student.pk %}"><button class="btn btn-outline-secondary btn-sm update-student-btn">
+            修改資料</button></a></td>
+
+        <td scope="col"><a href="{% url 'app:deleteStudents' pk=student.pk %}"><button
+            class="btn btn-outline-secondary btn-sm delete-grade-btn">
+            刪除學生
+        </button></a></td>
+    </tr>
+{% endfor %}

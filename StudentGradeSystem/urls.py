@@ -20,7 +20,7 @@ from app import views
 
 
 urlpatterns = [
-    path('', views.homePage, name='home'),#! homePage 一定要在這邊？
+    path('', views.getHomePage, name='home'),#! homePage 一定要在這邊？
     # 把app內的urls放入
     path("app/", include("app.urls")),
 
