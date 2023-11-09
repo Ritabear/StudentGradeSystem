@@ -21,11 +21,11 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from app.forms import CreateStudentForm, CreateSubjectForm, CreateGradeForm
 from django.db.models import Q
 
-PAGINATE_NUM = 10
-def homePage(request):
+PAGINATE_NUM = 20
+def getHomePage(request):
     return render(request, "app/Base.html")
 
-def index(request):
+def getIndex(request):
     return render(request, "app/Index.html")
 
 
@@ -170,8 +170,11 @@ class ListStudentView(ListView):
     # templates 已經在settins 有定義了
     template_name = 'app/Student.html'
     context_object_name = "students"
-    # paginate_by = 6
-    # ordering = '-id'
+    # ordering = '-id' #ordering = ['title']
+
+    # def post(self, request, **kwargs):
+    #     response_data = 'your data'
+    # return HttpResponse(json.dumps(response_data),content_type="application/json")
 
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
     #     context = super().get_context_data(**kwargs)
@@ -180,6 +183,12 @@ class ListStudentView(ListView):
     #     pk = self.kwargs['pk']
     #     return context
 
+
+class ListStudentView1(ListView):
+    paginate_by = PAGINATE_NUM
+    model = Student
+    template_name = 'app/Student1.html'
+    context_object_name = "students"
 
 class CreateStudentView(CreateView):
     form_class = CreateStudentForm
@@ -221,7 +230,7 @@ class UpdateStudentView(UpdateView):
 class DeleteStudentView(LoginRequiredMixin, DeleteView):
     model = Student
     success_url = reverse_lazy('app:listStudents')
-    template_name = 'DeleteStudent.html'
+    template_name = 'app/DeleteStudent.html'
 
 
 # createSubject

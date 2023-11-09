@@ -3,40 +3,24 @@
 
 {% block content %}
 
-    <a href="{% url 'app:createStudent' %}" class="btn btn-outline-secondary btn-sm">新增學生</a>
-    <table class="table">
+<div class="createNew"><a href="{% url 'app:createStudent' %}" class="btn btn-outline-secondary btn-sm">新增學生</a></div>
 
+<table class="table">
     <thead>
         <tr>
-        {% comment %} <th scope="col">#</th> {% endcomment %}
-        <th scope="col"></th>
-        <th scope="col">學生ID</th>
-        <th scope="col">姓名</th>
-        <th scope="col">電話</th>
-        <th scope="col">email</th>
-        <th scope="col">更改</th>
-        <th scope="col">刪除</th>
+            {% comment %} <th scope="col">#</th> {% endcomment %}
+            <th scope="col"></th>
+            <th scope="col">學生ID</th>
+            <th scope="col">姓名</th>
+            <th scope="col">電話</th>
+            <th scope="col">email</th>
+            <th scope="col">更改</th>
+            <th scope="col">刪除</th>
         </tr>
     </thead>
-    <tbody>
-        {% for student in students %}
-            <tr>
-                <td scope="col"></td>
-                <td scope="col">{{ student.id }}</td>
-                <td scope="col">{{ student.name }}</td>
-                <td scope="col">{{ student.phoneNumber }}</td>
-                <td scope="col">{{ student.email }}</td>
-                <td scope="col"><a href="{% url 'app:updateStudents' pk=student.pk %}"><button class="btn btn-outline-secondary btn-sm update-student-btn">
-                    修改資料</button></a></td>
-
-                <td scope="col"><a href="{% url 'app:deleteStudents' pk=student.pk %}"><button
-                    class="btn btn-outline-secondary btn-sm delete-grade-btn">
-                    刪除學生
-                </button></a></td>
-            </tr>
-        {% endfor %}
+    <tbody class="infinite-container">
     </tbody>
-    </table>
+</table>
 
 {% comment %} {% for stuedent in page_obj %}
     {# Each "stuedent" is a stuedent model object. #}
@@ -44,24 +28,68 @@
     ...
 {% endfor %} {% endcomment %}
 
-<div class="pagination">
-    <span class="step-links">
+{% comment %} <div class="pagination">
+    <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
-            <li><a href="?page=1">&laquo; first</a></li>
-            <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
         {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+        <li class="page-item disabled">
+            <span class="page-link">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        </li>
 
         {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
-            <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
-    </span>
-</div>
+    </ul>
+</div> {% endcomment %}
+
+
+
+<script>
+    let page = 1
+    let page_load = false
+    $(document).ready(function () {
+        // 設定每次滾動觸發的函數
+        $(window).mouseover(function () {
+            // 如果滾動到底部
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+                // 加載新資料的邏輯，可以是Ajax請求或其他方式
+                if (page_load) {
+                    return
+                }
+                page_load = true
+                $.ajax({
+                    url: "{% url 'app:listStudents1' %}",
+                    data: {
+                        "page": page,
+                    },
+                    type: 'GET',
+                    success: function (data) {
+                        // 將新資料追加到表格
+                        // $('.infinite-container').append(data);
+                        document.querySelector(".infinite-container").innerHTML += data
+                        page += 1
+                        //console.log(data);
+                        page_load = false
+                    },
+                    error: function () {
+                        console.error("Error loading more data.");
+                        page_load = false
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
 {% endblock %}
+
 
 {% comment %} {% block script %} {% endcomment %}
 {% comment %} text align {% endcomment %}

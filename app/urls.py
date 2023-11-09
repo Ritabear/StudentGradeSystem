@@ -1,15 +1,19 @@
+from django.conf import settings
 from django.urls import include,path
 
+from django.conf.urls.static import static
 from app import views
 from app.views import ListStudentView,CreateStudentView,UpdateStudentView,DeleteStudentView, \
     ListGradeView,ListSubjectView,DeleteSubjectView,CreateGradeView,UpdateGradeView,DeleteGradeView,UpdateSubjectView
 
+
 app_name = "app"
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.getIndex, name="index"),
 
     path("students/", views.ListStudentView.as_view(), name="listStudents"),
+    path("students1/", views.ListStudentView1.as_view(), name="listStudents1"),
     path("students/create/", views.CreateStudentView.as_view(), name="createStudent"),
     # path("students/create", views.CreateStudentForm, name="createStudentForm"),
     path("students/update/<int:pk>/", views.UpdateStudentView.as_view(), name="updateStudents"),
@@ -34,7 +38,6 @@ urlpatterns = [
 
 
     # path('students/search/', views.searchStudent, name='search'),
-    #re
     # path('search/', views.searchStudent, name='search'),
     path('api/search/', views.searchComplete, name='searchComplete'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
