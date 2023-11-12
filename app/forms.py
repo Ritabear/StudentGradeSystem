@@ -19,3 +19,4 @@ class CreateGradeForm(ModelForm):
     class Meta:
         model = Grade
         fields = "__all__"
+    # grade = forms.IntegerField(min_value=0, max_value=100)

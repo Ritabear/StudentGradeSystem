@@ -1,6 +1,8 @@
 
 {% extends "app/Index.html" %}
 {% load static %}
+{% comment %} <link rel="stylesheet" href="{% static 'css/default.css' %}"> {% endcomment %}
+
 
 {% block content %}
 <form method="POST" action="{% url 'app:createSubject' %}">
@@ -19,8 +21,9 @@
         <label for="subjectName">科目名稱</label>
         <input type="text" class="form-control" id="subjectName" name="subjectName" placeholder="請輸入科目名稱">
     </div>
+    <div class="space-more" style="margin-top: 50px;"></div>
 
 
-    <button type="submit" class="btn btn-outline-primary" name="save" >確認</button>
+    <button type="submit" class="btn btn-outline-primary position-absolute top-20 start-50 translate-middle" name="save" >確認</button>
 </form>
 {% endblock %}

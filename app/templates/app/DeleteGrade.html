@@ -1,5 +1,6 @@
 {% extends "app/Student.html" %}
 {% load static %}
+<link rel="stylesheet" type='text/css' href="{% static 'css/form.css' %}">
 
 {% block content %}
     <h2>Confirm Deletion</h2>
@@ -8,8 +9,7 @@
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Confirm Delete</button>
     </form>
-    <a href="{% url 'app:listGrades' %}" class="btn btn-secondary">Cancel</a>
+    <button href="{% url 'app:listGrades' %}" class="btn btn-secondary">Cancel</button>
 {% endblock %}
-
 {% comment %} 怎樣同一頁刪除 {% endcomment %}
 

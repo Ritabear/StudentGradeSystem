@@ -29,8 +29,8 @@
                 {% comment %} <td scope="col">{{ subject . pk }}</td> {% endcomment %}
                 <td scope="col">{{ subject.id }}</td>
                 <td scope="col">{{ subject.subjectName }}</td>
-                <td scope="col">
-                    {% comment %}
+                {% comment %}<td scope="col">
+
                     <a href="{% url 'app:updateSubjects' pk=subject.pk %}"><button
                             class="btn btn-outline-secondary btn-sm update-subject-btn">
                             修改科目</button></a>
@@ -64,28 +64,6 @@
             {% endfor %}
         </tbody>
     </table>
-
-<div class="pagination">
-    <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
-        {% endif %}
-
-        <li class="page-item disabled">
-            <span class="page-link">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-        </li>
-
-        {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
-        {% endif %}
-    </ul>
-</div>
-
-
 {% endblock %}
     {% comment %} "DELETE /app/subjects/ HTTP/1.1" 405 0 delete method not allow {% endcomment %}
 {% block replenishJS %}

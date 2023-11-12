@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (get_object_or_404, redirect,
                               render,
                               HttpResponseRedirect)
-
+from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
@@ -141,11 +141,19 @@ class CreateGradeView(CreateView):
     success_url = reverse_lazy('app:listGrades')
 
 
-class UpdateGradeView(UpdateView):
+class UpdateGradeView(SuccessMessageMixin,UpdateView):
     model = Grade
     fields = "__all__"
     template_name = 'app/UpdateGrade.html'
     success_url = reverse_lazy('app:listGrades')
+
+    # success_message = "%(student)s was created successfully"
+
+    # def get_success_message(self, cleaned_data):
+    #     return self.success_message % dict(
+    #         cleaned_data,
+    #         student=self.object.student,
+    #     )
 
     # def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
     #     context = super().get_context_data(**kwargs)
@@ -153,14 +161,15 @@ class UpdateGradeView(UpdateView):
     #     return context
     #! 順序要換一下，了解form_valid
     def form_valid(self, form):
-        messages.success(self.request, "更改成功")
-        return super().form_valid(form)
+        messages.success(self.request, "This is my success message")
+        super().form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class DeleteGradeView(LoginRequiredMixin,DeleteView):
     model = Grade
     success_url = reverse_lazy('app:listGrades')
-    template_name = 'DeleteGrade.html'
+    template_name = 'app/DeleteGrade.html'
 
 
 class ListStudentView(ListView):
@@ -213,6 +222,7 @@ class UpdateStudentView(UpdateView):
     fields = "__all__"
     template_name = 'app/UpdateStudent.html'
     success_url = reverse_lazy('app:listStudents')
+
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)

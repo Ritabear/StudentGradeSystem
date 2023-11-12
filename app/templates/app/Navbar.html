@@ -25,8 +25,10 @@
             <li><a href="{% url 'app:listStudents' %}" class="nav-link">所有學生</a></li>
 
 
+
             <li class="has-children">
                 {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'home' %}">Hi {{ user.username }}</a>
                 {% comment %} {% if user.is_superuser %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin_approval' %}">Admin</a>
@@ -54,7 +56,7 @@
      <form id="searchform" class="form-inline my-2 my-lg-0" action="{% url 'app:searchComplete' %}" method="GET">
         {% comment %} {% csrf_token %} {% endcomment %}
         <div class="row">
-            <label for="search" class="col">Search</label>
+            {% comment %} <label for="search" class="col">Search</label> {% endcomment %}
             <div class="col">
                 {% comment %} name= "naem" {% endcomment %}
                 <input class="form-control mr-sm-1" name="search" type="text" placeholder="search" id="search" />
@@ -71,8 +73,8 @@
     <script>
     $( function() {
         $( "#search" ).autocomplete({
-        source: "{% url 'app:searchComplete' %}",
-        minLength: 1,
+            source: "{% url 'app:searchComplete' %}",
+            minLength: 1,
         });
     } );
     </script>

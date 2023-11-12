@@ -29,8 +29,9 @@ class Command(BaseCommand):
                 Student.objects.create(
                     **data
                 )
-                Student.save()
-            except:
+                # Student.save()
+            except Exception as e:
+                print(f"Error: {e}")
                 CommandError('失敗！')
             self.stdout.write(self.style.SUCCESS(f'Successfully create user {faker.name_male()}'))
             #! self.stdout.write vs print
