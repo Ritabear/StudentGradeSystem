@@ -13,7 +13,8 @@ semesterRule = RegexValidator(regex=r'\d{3}\-[1-2]',message="請輸入正確的�
 #學生
 class Student(models.Model):
     name = models.CharField(verbose_name="名字",max_length=30,blank=False,null=False)
-    phoneNumber = models.IntegerField(verbose_name="手機", blank=False,validators=[phoneNumberRule], unique=True)
+    #!IntegerField
+    phoneNumber = models.CharField(verbose_name="手機",max_length=15, blank=False,validators=[phoneNumberRule], unique=True)
     email =models.CharField(max_length=50,blank=False,validators=[emailRule])
     # gender = models.IntegerChoices(choices=((0, "男"), (1, "女"),(2,"未知")), default=2, verbose_name="性別")
 
@@ -39,9 +40,9 @@ class Subject(models.Model):
 
 # 成績
 class Grade(models.Model):
-    student = models.ForeignKey(verbose_name="學生", to=Student, on_delete=models.CASCADE, blank=False, null=False)
+    student = models.ForeignKey(verbose_name="學生", to=Student, on_delete=models.CASCADE, blank=False, null=False,db_constraint=False)
     semester = models.CharField(max_length=6, validators=[semesterRule])
-    subject = models.ForeignKey(verbose_name="科目", to=Subject, on_delete=models.CASCADE, blank=False, null=False)
+    subject = models.ForeignKey(verbose_name="科目", to=Subject, on_delete=models.CASCADE, blank=False, null=False,db_constraint=False)
     grade = models.IntegerField(
         verbose_name="成績",
         validators=[MaxValueValidator(100), MinValueValidator(0)],
