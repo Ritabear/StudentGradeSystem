@@ -24,6 +24,7 @@
 <div id='load' style="height: 200px; background: green display:none">
     Loading ...........# include OneStudent.html
 </div>
+{% comment %} inclode~~~~~ student {% endcomment %}
 
 {% comment %} {% for stuedent in page_obj %}
     {# Each "stuedent" is a stuedent model object. #}
@@ -54,20 +55,21 @@
 
 
 <script>
+    //#! 取名
     let page = 1
-    let page_load = false
+    let pageLoad = false
     $(document).ready(function () {
         // 設定每次滾動觸發的函數
         $(window).mouseover(function () {
             // 如果滾動到底部
             if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
                 // 加載新資料的邏輯，可以是Ajax請求或其他方式
-                if (page_load) {
+                if (pageLoad) {
                     return
                 }
                 document.querySelector("#load").style.background = "red"
 
-                page_load = true
+                pageLoad = true
                 document.querySelector(".infinite-container")
                 $.ajax({
                     url: "{% url 'app:listStudents1' %}",
@@ -76,17 +78,18 @@
                     },
                     type: 'GET',
                     success: function (data) {
+                        //#! 加上sleep 這樣看的出loading
                         // 將新資料追加到表格
                         // $('.infinite-container').append(data);
                         document.querySelector(".infinite-container").innerHTML += data
                         page += 1
                         //console.log(data);
-                        page_load = false
+                        pageLoad = false
                         document.querySelector("#load").style.display="none";
                     },
                     error: function () {
                         console.error("Error loading more data.");
-                        page_load = false
+                        pageLoad = false
                         document.querySelector("#load").style.background = "blue"
                     }
                 });

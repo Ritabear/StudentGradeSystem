@@ -28,7 +28,7 @@
 
             <li class="has-children">
                 {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'home' %}">Hi {{ user.username }}</a>
+                <a class="nav-link" href="{% url 'home' %}">Hi {{ user . username }}</a>
                 {% comment %} {% if user.is_superuser %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin_approval' %}">Admin</a>
@@ -53,7 +53,7 @@
 
 
 
-     <form id="searchform" class="form-inline my-2 my-lg-0" action="{% url 'app:searchComplete' %}" method="GET">
+    <form id="searchform" class="form-inline my-2 my-lg-0" action="{% url 'app:searchComplete' %}" method="GET">
         {% comment %} {% csrf_token %} {% endcomment %}
         <div class="row">
             {% comment %} <label for="search" class="col">Search</label> {% endcomment %}
@@ -71,16 +71,17 @@
     </form>
 
     <script>
-    $( function() {
-        $( "#search" ).autocomplete({
-            source: "{% url 'app:searchComplete' %}",
-            minLength: 1,
+        $(function() {
+            $("#search").autocomplete({
+                source: "{% url 'app:searchComplete' %}",
+                minLength: 1,
+            });
         });
-    } );
     </script>
 
 
-    {% comment %} <script>
+    {% comment %}
+    <script>
         document.querySelector("#searchform").addEventListener("change", async (evt) => {
             console.log(evt);
             await fetch("http://127.0.0.1:8082/app/api/search?name=" + evt.target.value).then(rep => rep.json())

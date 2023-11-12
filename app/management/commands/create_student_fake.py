@@ -1,10 +1,12 @@
 from typing import Any
 from django.core.management.base import BaseCommand, CommandError, CommandParser
 from django.contrib.auth.hashers import make_password
+from django.db import transaction
 from faker import Faker
 
 from app.models import Student
 
+#! django transaction
 class Command(BaseCommand):
     help = "建立 fake 學生"
 
@@ -12,27 +14,26 @@ class Command(BaseCommand):
         parser.add_argument('num', nargs='+', type=int)
 
     def handle(self, *args: Any, **options: Any):
-        number = options.get('num')[0]   # 注意：此处options.get('num')是一个列表
-        if number is None:
-            number = 3
+        number = options.get('num')[0]   #error: the following arguments are required: num
         # password = make_password('123456')
         faker = Faker(['zh_TW'])
         for _ in range(int(number)):
             data = {
                 'name': faker.name_male(),
-                'phoneNumber': faker.phone_number(),
+                'phoneNumber': str(faker.numerify('09########')), #phoneNumber:str
                 'email': faker.email(),
-                # 'password': password,
+                # 'password': "password",
                 # 'is_superuser': True,
             }
             try:
-                Student.objects.create(
-                    **data
-                )
+                with transaction.atomic():
+                    Student.objects.create(
+                        **data
+                    )
                 # Student.save()
             except Exception as e:
                 print(f"Error: {e}")
-                CommandError('失敗！')
+                raise CommandError(f'{e}') # 到這邊return 出去後面不會直接執行
             self.stdout.write(self.style.SUCCESS(f'Successfully create user {faker.name_male()}'))
             #! self.stdout.write vs print
 # python manage.py create_student_fake 3
