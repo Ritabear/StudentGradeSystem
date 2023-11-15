@@ -6,7 +6,7 @@
 
 {% comment %} <form method="post" action="{% url 'app:createStudentForm' %}" enctype="multipart/form-data">
   {% endcomment %}
-<form method="POST" action="{% url 'app:createStudent' %}" enctype="multipart/form-data">
+<form method="POST" action="{% url 'app:createStudent' %}" enctype="multipart/form-data" class="form-horizontal">
     {% csrf_token %}
     {% comment %}
     方法1. 新增學生
@@ -28,24 +28,31 @@
     PS. 下面是方法3. 新增學生自訂欄位
     {% endcomment %}
 
-    <div class="mb-5">
-      <label for="exampleInputEmail1" class="form-label">名字</label>
-      <input type="text" class="form-control" placeholder="名字" name="name">
+    <div class="form-group row">
+      <label for="exampleInputEmail1" class="col-sm-2 control-label">名字</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" placeholder="名字" name="name">
+      </div>
     </div>
 
-    <div class="mb-5">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <div class="form-group row">
+      <label for="exampleInputEmail1" class="col-sm-2  control-label">Email address</label>
+      <div class="col-sm-6">
       <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="email">
       <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+    </div>
 
       <div></div>
-      <div class="mb-5">
-        <label for="exampleInputEmail1" class="form-label">電話號碼</label>
+      <div class="form-group row">
+        <label for="exampleInputEmail1" class="col-sm-2  control-label">電話號碼</label>
+        <div class="col-sm-6">
         <input type="text" class="form-control" placeholder="電話號碼" name="phoneNumber">
+        </div>
       </div>
 
 
-      <div class="mb-3 form-check">
+      <div class="form-group mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Check me out</label>
       </div>

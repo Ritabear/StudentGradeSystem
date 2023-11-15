@@ -11,14 +11,7 @@
       "program": "${workspaceFolder}/manage.py",
       "args": ["runserver"],
       "django": true,
-      "justMyCode": true
-    },
-    {
-      "name": "Attach to Edge",
-      "port": 9222,
-      "request": "attach",
-      "type": "msedge",
-      "webRoot": "${workspaceFolder}"
+      "justMyCode": false
     },
     {
       "name": "Python: Django create_student_fake",

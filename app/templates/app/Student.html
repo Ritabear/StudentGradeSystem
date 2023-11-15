@@ -69,6 +69,7 @@
                 }
                 document.querySelector("#load").style.background = "red"
 
+
                 pageLoad = true
                 document.querySelector(".infinite-container")
                 $.ajax({
@@ -85,6 +86,7 @@
                         page += 1
                         //console.log(data);
                         pageLoad = false
+                        //setInterval(function(){console.log('check data');},10000);
                         document.querySelector("#load").style.display="none";
                     },
                     error: function () {

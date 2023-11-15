@@ -155,16 +155,22 @@ class UpdateGradeView(SuccessMessageMixin,UpdateView):
     #         student=self.object.student,
     #     )
 
-    # def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-    #     context = super().get_context_data(**kwargs)
-    #     context["headerNames"] = [subject.subjectName for subject in Subject.objects.all()]
-    #     return context
+    #! 給template這些東西
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        # print(self.kwargs)
+        # print(context)
+        # context["oriStudent"] = Student.objects.filter()
+        # context["oriSubject"] = Subject.objects.filter()
+        context["students"] = [stu for stu in Student.objects.values()]#.all()
+        context["subjects"] = [sub for sub in Subject.objects.values()]
+        return context
     #! 順序要換一下，了解form_valid
     def form_valid(self, form):
         messages.success(self.request, "This is my success message")
+        print(form)
         super().form_valid(form)
         return HttpResponseRedirect(self.get_success_url())
-
 
 class DeleteGradeView(LoginRequiredMixin,DeleteView):
     model = Grade

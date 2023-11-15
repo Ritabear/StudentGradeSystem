@@ -17,6 +17,15 @@ class Student(models.Model):
     phoneNumber = models.CharField(verbose_name="手機",max_length=15, blank=False,validators=[phoneNumberRule], unique=True)
     email =models.CharField(max_length=50,blank=False,validators=[emailRule])
     # gender = models.IntegerChoices(choices=((0, "男"), (1, "女"),(2,"未知")), default=2, verbose_name="性別")
+    gender = models.IntegerField(choices=((0, "男"), (1, "女"),(2,"未知")), default=2, verbose_name="性別")
+
+    # class Gender(models.IntegerChoices):
+    #     man = 0
+    #     woman = 1
+    #     unknown = 2
+    # gender = models.IntegerField(choices=Gender.choices)
+
+
 
     def __str__(self):
         return f"{self.name}"
@@ -31,8 +40,9 @@ class Student(models.Model):
 class Subject(models.Model):
     subjectName = models.CharField(max_length=30,unique=True,verbose_name ="科目名稱")
 
+    # 確保admin裡面顯示的是名字而不是object
     def __str__(self):
-        return self.subjectName
+        return f"{self.subjectName}"
 
     class Meta:
         verbose_name = "科目"
@@ -50,9 +60,11 @@ class Grade(models.Model):
         null=True
     )
 
-
     def __str__(self):
         return f"{self.student.name} on semester {self.semester} has {self.subject.subjectName} with grade {self.grade}"
+
+
+
 
     class Meta:
         verbose_name = "成績"

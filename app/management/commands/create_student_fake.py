@@ -1,3 +1,4 @@
+import random
 from typing import Any
 from django.core.management.base import BaseCommand, CommandError, CommandParser
 from django.contrib.auth.hashers import make_password
@@ -20,6 +21,7 @@ class Command(BaseCommand):
         for _ in range(int(number)):
             data = {
                 'name': faker.name_male(),
+                'gender': random.randint(0, 2),
                 'phoneNumber': str(faker.numerify('09########')), #phoneNumber:str
                 'email': faker.email(),
                 # 'password': "password",

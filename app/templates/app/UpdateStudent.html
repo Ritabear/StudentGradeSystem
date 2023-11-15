@@ -4,7 +4,9 @@
 {% block content %}
     <form method="POST" style="text-align:center;">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-control">
+            {{ form.as_p }}
+        </div>
         <button type="submit" class="btn btn-outline-primary">確認變更</button>
     </form>
 {% endblock %}

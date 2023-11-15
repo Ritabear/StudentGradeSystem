@@ -5,7 +5,7 @@
 
 
 {% block content %}
-<form method="POST" action="{% url 'app:createSubject' %}">
+<form method="POST" action="{% url 'app:createSubject' %}" class="form-horizontal">
     {% csrf_token %}
     {% comment %} {{ form.as_p }} {% endcomment %}
 
@@ -18,12 +18,12 @@
     {% endfor %} {% endcomment %}
 
     <div class="form-group">
-        <label for="subjectName">科目名稱</label>
-        <input type="text" class="form-control" id="subjectName" name="subjectName" placeholder="請輸入科目名稱">
+        <label for="subjectName" class="col-sm-1 control-label">科目名稱</label>
+        <input type="text" class="col-sm-6" id="subjectName" name="subjectName" placeholder="請輸入科目名稱">
     </div>
     <div class="space-more" style="margin-top: 50px;"></div>
-
-
     <button type="submit" class="btn btn-outline-primary position-absolute top-20 start-50 translate-middle" name="save" >確認</button>
+
+
 </form>
 {% endblock %}

@@ -1,0 +1,98 @@
+{% extends "app/Index.html" %}
+{% load static %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" id="form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_student">學生:</label>
+            <select name="student" required id="id_student" class="form-control">
+                <option value="">---------</option>
+                {% for student in form.student %}
+                    <option value="{{ student }}">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="id_semester">Semester:</label>
+            <input type="text" class="form-control" id="id_semester" name="semester" value="{{ form.semester.value }}" maxlength="6">
+            <div class="error-message" style="color:red;">請輸入正確的學期</div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_subject">科目:</label>
+            <select name="subject" required id="id_subject" class="form-control">
+                <option value="">---------</option>
+                {% for subject in form.subject %}
+                    <option value="{{ subject }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="id_grade">成績:</label>
+            <input type="text" class="form-control" id="id_grade" name="grade" value="{{ form.grade.value }}">
+            <div class="error-message" style="color:red;">請輸入正確的成績</div>
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary" id="update">確認變更</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#form').on('change', function () {
+                let grade = $('#id_grade');
+                let semester = $('#id_semester');
+                let semesterValue = semester.val();
+                let semesterParts = semesterValue.split('-');
+                let numericPart = parseInt(semesterParts[0], 10);
+
+                let semesterError = $('.error-message[for="id_semester"]');
+                let gradeError = $('.error-message[for="id_grade"]');
+
+                if ($grade.val() > 100 || $grade.val() < 0 || $semesterParts.length !== 2
+                || $numericPart <= 100 || $numericPart >= 200) {
+                    if ($grade.val() > 100 || $grade.val() < 0) {
+                        $grade.css('borderColor', 'red');
+                        $gradeError.show();
+                    } else {
+                        $grade.css('borderColor', '');
+                        $gradeError.hide();
+                    }
+
+                    if ($semesterParts.length !== 2 || $numericPart <= 100 || $numericPart >= 200) {
+                        $semester.css('borderColor', 'red');
+                        $semesterError.show();
+                    } else {
+                        $semester.css('borderColor', '');
+                        $semesterError.hide();
+                    }
+
+                    $('#update').addClass('disabled');
+                } else {
+                    $grade.css('borderColor', '');
+                    $semester.css('borderColor', '');
+                    $gradeError.hide();
+                    $semesterError.hide();
+                    $('#update').removeClass('disabled');
+                }
+            });
+        });
+    </script>
+{% endblock %}
