@@ -1,8 +1,7 @@
 
 <td>
-<form hx-post="{% url 'app:updateSubjects' pk=subject.pk %}" hx-target="closest tr" hx-trigger="click" hx-swap="outerHTML" >
-
-    {{ form.as_p }}
+<form  hx-post="{% url 'app:updateSubjects' pk=subject.pk %}" hx-target="closest tr" hx-trigger="click" hx-swap="outerHTML" >
+        {{ form.as_p }}
     <button type="submit">Submit</button>
 </form>
 </td>

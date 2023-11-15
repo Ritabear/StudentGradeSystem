@@ -1,0 +1,81 @@
+{% extends "app/Index.html" %}
+{% load static %}
+
+{% block content %}
+
+     {% if messages %}
+        {% for message in messages %}
+    <div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+        {{ message }}
+    </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    <form method="POST" id="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-primary" id="update">確認變更</button>
+    </form>
+
+    <script>
+    /* 這樣會出現disable 又 able 的問題
+    document.querySelector("#form").addEventListener("change", evt =>{
+        if (grade.value > 100 || grade.value < 0)
+            document.querySelector("#update").classList.add("disabled");
+        else
+            document.querySelector("#update").classList.remove("disabled");
+
+        const semesterValue = semester.value;
+        const semesterParts = semesterValue.split('-');
+        if (semesterParts.length === 2) {
+            const numericPart = parseInt(semesterParts[0], 10);
+            if (numericPart >= 100 && numericPart <= 200) {
+                document.querySelector("#update").classList.remove("disabled");
+            } else {
+
+                document.querySelector("#update").classList.add("disabled");
+            }
+        }
+    });
+    */
+    // #! Dom 與 Jquery 不要混用  + 表單改用，不要用預設，然後出錯的訊息要自己寫，再顯現，而不是自己創
+    let divSemester = document.createElement("div");
+    let divGrade = document.createElement("div");
+    document.querySelector("#form").addEventListener("change", evt =>{
+        let grade = document.querySelector("#id_grade")
+        let semester = document.querySelector("#id_semester")
+        let semesterValue = semester.value;
+        let semesterParts = semesterValue.split('-');
+        let numericPart = parseInt(semesterParts[0], 10);
+        if (grade.value > 100 || grade.value < 0 || semesterParts.length !== 2 || numericPart <= 100 || numericPart >= 200) {
+            if (grade.value > 100 || grade.value < 0){
+                //$("#id_grade").css('borderColor','red');
+                //grade.style.display = "none"
+                grade.style.borderColor = "red"
+                document.querySelectorAll("form p")[3].append(divGrade)
+                divGrade.innerHTML = "請輸入正確的成績"
+            }
+            if (semesterParts.length !== 2 || numericPart <= 100 || numericPart >= 200){
+                semester.style.borderColor = "red"
+                document.querySelectorAll("form p")[1].append(divSemester)
+                divSemester.innerHTML = "請輸入正確的學期"
+            }
+            document.querySelector("#update").classList.add("disabled")
+
+        }
+        else
+            document.querySelector("#update").classList.remove("disabled")
+    });
+
+
+
+
+
+    </script>
+{% endblock %}
