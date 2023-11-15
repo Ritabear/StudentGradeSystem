@@ -4,9 +4,18 @@
 {% block content %}
     <form method="POST" style="text-align:center;">
         {% csrf_token %}
-        <div class="form-control">
+        {% comment %} <div class="form-control">
             {{ form.as_p }}
-        </div>
+        </div> {% endcomment %}
+        {% for field in form %}
+
+                <div class="form-group row">
+                    <label for="{{ field.id_for_label }}" class="col-sm-5 text-end">{{ field.label }}</label>
+                    {#直接用field，而不是form_obj.field#}
+                    <div class="col-sm-3"> {{ field }}</div>
+                </div>
+            {% endfor %}
+        <div class="space-more" style="margin-top: 50px;"></div>
         <button type="submit" class="btn btn-outline-primary">確認變更</button>
     </form>
 {% endblock %}
