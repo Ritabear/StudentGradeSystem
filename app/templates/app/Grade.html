@@ -4,12 +4,13 @@
 {% block content %}
     {% comment %} <p> {{ grades }} </p> {% endcomment %}
      <a href="{% url 'app:createGrade' %}" class="btn btn-outline-secondary btn-sm">新增成績</a>
+
+    <div class="table-container">
     <table class="table">
 
     <thead>
         <tr>
         {% comment %} <th scope="col">#</th> {% endcomment %}
-        <th scope="col"></th>
         <th scope="col">ID</th>
         <th scope="col">姓名</th>
         <th scope="col">學期</th>
@@ -22,7 +23,6 @@
     <tbody>
         {% for grade in grades %}
             <tr>
-                <td scope="col"></td>
                 <td scope="col">{{ grade.id }}</td>
                 <td scope="col">{{ grade.student }}</td>
                 <td scope="col">{{ grade.semester }}</td>
@@ -37,6 +37,7 @@
         {% endfor %}
     </tbody>
     </table>
+    </div>
 {% endblock %}
 
 

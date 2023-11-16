@@ -36,6 +36,7 @@ class Student(models.Model):
         verbose_name = "學生"
         verbose_name_plural = verbose_name
 
+
 #科目
 class Subject(models.Model):
     subjectName = models.CharField(max_length=30,unique=True,verbose_name ="科目名稱")
@@ -70,3 +71,10 @@ class Grade(models.Model):
         verbose_name = "成績"
         verbose_name_plural = "成績"
         unique_together = ["student", "semester", "subject"]
+        # Set permissions.
+        permissions = (
+            ('readGrade', 'readGrade'), #(attribure,解釋)
+            ('createGrade', 'createGrade'),
+            ('updateGrade', 'updateGrade'),
+            ('deleteGrade', 'deleteGrade'),
+        )

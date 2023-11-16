@@ -10,7 +10,6 @@
         <thead>
             <tr>
                 {% comment %} <th scope="col">#</th> {% endcomment %}
-                <th scope="col"></th>
                 <th scope="col">科目ID
                     <button class="btn btn-outline-secondary btn-sm order-btn" data-order="id">排序</button>
                 </th>
@@ -25,7 +24,6 @@
         <tbody>
             {% for subject in subjects %}
             <tr>
-                <td scope="col"></td>
                 {% comment %} <td scope="col">{{ subject . pk }}</td> {% endcomment %}
                 <td scope="col">{{ subject.id }}</td>
                 <td scope="col">{{ subject.subjectName }}</td>
@@ -98,7 +96,6 @@
         let SUBJECTS_API_URL = "{{ SUBJECTS_API_URL }}"
     </script>
 
-    <script type="text/javascript" src="{% static 'js/all.js' %}" defer></script>
 
 
 {% endblock %}

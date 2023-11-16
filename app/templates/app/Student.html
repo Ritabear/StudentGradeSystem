@@ -7,11 +7,11 @@
 
 <table class="table">
     <thead>
-        <tr>
+        <tr class="studentHeader">
             {% comment %} <th scope="col">#</th> {% endcomment %}
-            <th scope="col"></th>
             <th scope="col">學生ID</th>
             <th scope="col">姓名</th>
+            <th scope="col">性別</th>
             <th scope="col">電話</th>
             <th scope="col">email</th>
             <th scope="col">更改</th>
@@ -55,6 +55,11 @@
 
 
 <script>
+    function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+
     //#! 取名
     let page = 1
     let pageLoad = false
@@ -68,6 +73,7 @@
                     return
                 }
                 document.querySelector("#load").style.background = "red"
+                document.querySelector("#load").style.display = "block"
 
 
                 pageLoad = true
@@ -82,12 +88,14 @@
                         //#! 加上sleep 這樣看的出loading
                         // 將新資料追加到表格
                         // $('.infinite-container').append(data);
+                        //time sleep
+                        delay(5000).then(() => {
                         document.querySelector(".infinite-container").innerHTML += data
                         page += 1
                         //console.log(data);
                         pageLoad = false
                         //setInterval(function(){console.log('check data');},10000);
-                        document.querySelector("#load").style.display="none";
+                        document.querySelector("#load").style.display="none";});
                     },
                     error: function () {
                         console.error("Error loading more data.");

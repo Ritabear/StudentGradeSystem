@@ -6,7 +6,7 @@ from re import sub
 import re
 import stat
 from typing import Any, Dict
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import (get_object_or_404, redirect,
                               render,
                               HttpResponseRedirect)
@@ -130,6 +130,7 @@ class ListGradeView(ListView):
     template_name = 'app/Grade.html'
     context_object_name = "grades"
 
+
     # def get_context_data(self, **kwargs):#! overwite context_object_name
     #     pass
 
@@ -141,7 +142,10 @@ class CreateGradeView(CreateView):
     success_url = reverse_lazy('app:listGrades')
 
 
-class UpdateGradeView(SuccessMessageMixin,UpdateView):
+
+class UpdateGradeView(LoginRequiredMixin, PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
+    permission_required = 'grade.updateGrade'
+
     model = Grade
     fields = "__all__"
     template_name = 'app/UpdateGrade.html'
@@ -172,7 +176,7 @@ class UpdateGradeView(SuccessMessageMixin,UpdateView):
         super().form_valid(form)
         return HttpResponseRedirect(self.get_success_url())
 
-class DeleteGradeView(LoginRequiredMixin,DeleteView):
+class DeleteGradeView(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = Grade
     success_url = reverse_lazy('app:listGrades')
     template_name = 'app/DeleteGrade.html'
@@ -243,7 +247,7 @@ class UpdateStudentView(UpdateView):
         return super().form_valid(form)
 
 
-class DeleteStudentView(LoginRequiredMixin, DeleteView):
+class DeleteStudentView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Student
     success_url = reverse_lazy('app:listStudents')
     template_name = 'app/DeleteStudent.html'
@@ -277,7 +281,7 @@ class UpdateSubjectView(UpdateView):
 
 
 # ????
-class DeleteSubjectView(LoginRequiredMixin,DeleteView):
+class DeleteSubjectView(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = Subject
     # fields = "__all__"
     # fields = "id"

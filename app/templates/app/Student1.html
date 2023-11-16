@@ -1,8 +1,8 @@
 {% for student in students %}
-    <tr>
-        <td scope="col"></td>
+    <tr class="studentData">
         <td scope="col">{{ student.id }}</td>
         <td scope="col">{{ student.name }}</td>
+        <td scope="col">{{ student.gender }}</td>
         <td scope="col">{{ student.phoneNumber }}</td>
         <td scope="col">{{ student.email }}</td>
         <td scope="col"><a href="{% url 'app:updateStudents' pk=student.pk %}"><button class="btn btn-outline-secondary btn-sm update-student-btn">

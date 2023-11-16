@@ -1,3 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 .space-more {
     margin-top: 100px;
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 4; /* 確保navbar在最頂層 */
+}
+
+
+
+table {
+    /*设置相邻单元格的边框间的距离*/
+    border-spacing: 0;
+    /*表格设置合并边框模型*/
+    border-collapse: collapse;
+    text-align: center;
+}
+/*关键设置 tbody出现滚动条*/
+table tbody {
+    display: block;
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+table thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+/*关键设置：滚动条默认宽度是16px 将thead的宽度减16px*/
+table thead {
+    width: calc( 100% - 1em)
+}
+table thead th {
+    background: #ccc;
+}
+
+
+/* 表格th/td样式 */
+td,
+th {
+    width: 50px;
+    box-sizing: border-box;
+    /* border-right: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD; */
+    /*单元格 超出长度 显示...*/
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 30px;
+
+}
+
+
+table tbody {
+/* firefox */
+scrollbar-width: none;
+/* ie10+ */
+-ms-overflow-style: none;
+}
+/* chrome safari */
+table tbody::-webkit-scrollbar {
+display: none;
 }
