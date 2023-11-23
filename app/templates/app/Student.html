@@ -20,46 +20,88 @@
     </thead>
     <tbody class="infinite-container">
     </tbody>
+
+<td>
+    <div id='load' style="height: 100px; background: green; display:block;">
+    {% comment %} # include OneStudent.html {% endcomment %}
+    Loading ...........
+    </div>
+</td>
 </table>
-<div id='load' style="height: 200px; background: green display:none">
-    Loading ...........# include OneStudent.html
-</div>
+
+
 {% comment %} inclode~~~~~ student {% endcomment %}
-
-{% comment %} {% for stuedent in page_obj %}
-    {# Each "stuedent" is a stuedent model object. #}
-    {{ stuedent.name|upper }}<br>
-    ...
-{% endfor %} {% endcomment %}
-
-{% comment %} <div class="pagination">
-    <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
-        {% endif %}
-
-        <li class="page-item disabled">
-            <span class="page-link">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-        </li>
-
-        {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
-        {% endif %}
-    </ul>
-</div> {% endcomment %}
-
-
 
 <script>
     function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+    let page = 1;
+    let pageLoad = false;
+    let firstLoad = true;
+    let reachedEnd = false;
+    const scrollHeight = document.querySelector('.infinite-container').scrollHeight;
+    const scrollTop = document.querySelector('.infinite-container').scrollTop;
+    const clientHeight = document.querySelector('.infinite-container').clientHeight;
+
+    function loadMoreData(){
+        if(pageLoad || reachedEnd){
+            return;
+        const scrollHeight = document.querySelector('.infinite-container').scrollHeight;
+        const scrollTop = document.querySelector('.infinite-container').scrollTop;
+        const clientHeight = document.querySelector('.infinite-container').clientHeight;
+
+        console.log(scrollHeight, scrollTop, clientHeight);
+        }
+
+        if (scrollTop + clientHeight >= scrollHeight){
+            document.querySelector('#load').style.background = "red";
+            document.querySelector('#load').style.display = "block";
+            pageLoad = true;
+
+            fetch(`{% url 'app:listStudentsMore' %}?page=${page}`)
+            .then(response => response.text())
+            .then(data => {
+                delay(100).then(() => {
+                    document.querySelector('#load').style.display = "none";
+                    if(data.trim() === ''){
+                        reachedEnd = true;
+                        return;
+                    }
+                    document.querySelector(".infinite-container").innerHTML += data;
+                    page += 1;
+                    pageLoad = false;
+                    firstLoad = false;
+                });
+            })
+            .catch(error => {
+                console.error("Error loading more data.");
+                pageLoad = false;
+                document.querySelector('#load').style.background = "blue";
+                document.querySelector('#load').style.display = "none";
+            });
+        }
+    }
+    document.addEventListener("DOMContentLoaded",function(){
+        loadMoreData();
+    });
+
+    const infiniteContainer = document.querySelector('.infinite-container');
+    infiniteContainer.addEventListener('scroll', function(){
+        if (infiniteContainer.scrollTop + infiniteContainer.clientHeight >= infiniteContainer.scrollHeight)
+        loadMoreData();
+    });
+
+    loadMoreData();
+
+</script>
+
+
+
+{% comment %} <script>
+    function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time));
     }
-
-
     //#! 取名
     let page = 1
     let pageLoad = false
@@ -67,19 +109,22 @@
         // 設定每次滾動觸發的函數
         $(window).mouseover(function () {
             // 如果滾動到底部
+            //$(window).on('scroll', function () {
+            // Check if scrolled to the bottom
             if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                // Load new data logic
                 // 加載新資料的邏輯，可以是Ajax請求或其他方式
                 if (pageLoad) {
                     return
                 }
-                document.querySelector("#load").style.background = "red"
-                document.querySelector("#load").style.display = "block"
-
+                //document.querySelector("#load").style.background = "red"
+                //document.querySelector("#load").style.display = "block"
+                $('#load').css('background', 'red').show();
 
                 pageLoad = true
-                document.querySelector(".infinite-container")
+                //document.querySelector(".infinite-container")
                 $.ajax({
-                    url: "{% url 'app:listStudents1' %}",
+                    url: "{% url 'app:listStudentsMore' %}",
                     data: {
                         "page": page,
                     },
@@ -89,25 +134,29 @@
                         // 將新資料追加到表格
                         // $('.infinite-container').append(data);
                         //time sleep
-                        delay(5000).then(() => {
-                        document.querySelector(".infinite-container").innerHTML += data
-                        page += 1
-                        //console.log(data);
-                        pageLoad = false
+                        delay(2000).then(() => {
+                            //document.querySelector("#load").style.display="none";
+                            //document.querySelector(".infinite-container").innerHTML += data
+                            $('#load').hide();
+                            $('.infinite-container').append(data);
+                            page += 1
+                            pageLoad = false
+                            //console.log(data);
                         //setInterval(function(){console.log('check data');},10000);
-                        document.querySelector("#load").style.display="none";});
+                        });
                     },
                     error: function () {
                         console.error("Error loading more data.");
                         pageLoad = false
-                        document.querySelector("#load").style.background = "blue"
+                        //document.querySelector("#load").style.background = "blue"
+                        $('#load').css('background', 'blue').hide();
                     }
                 });
             }
         });
     });
 
-</script>
+</script> {% endcomment %}
 
 {% endblock %}
 

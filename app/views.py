@@ -28,6 +28,10 @@ def getHomePage(request):
 def getIndex(request):
     return render(request, "app/Index.html")
 
+# def custom_permission_denied(request, exception):
+#     return render(request, 'app/Index.html', status=403)
+
+
 
 def createSubject(request, pk=None):
     form = CreateSubjectForm(request.POST or None)
@@ -151,8 +155,20 @@ class UpdateGradeView(LoginRequiredMixin, PermissionRequiredMixin,SuccessMessage
     template_name = 'app/UpdateGrade.html'
     success_url = reverse_lazy('app:listGrades')
 
-    # success_message = "%(student)s was created successfully"
+    def handle_no_permission(self):
+        # messages.info(self.request ,self.permission_denied_message)
+        # or specific redirects based on context
+        return redirect(reverse_lazy('app:index'))
+        # if self.raise_exception or self.request.user.is_authenticated:
+        #     return redirect('app:index')
 
+
+
+        # #     raise PermissionDenied(self.get_permission_denied_message())
+        # return redirect_to_login(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
+
+
+    # success_message = "%(student)s was created successfully"
     # def get_success_message(self, cleaned_data):
     #     return self.success_message % dict(
     #         cleaned_data,
@@ -169,10 +185,10 @@ class UpdateGradeView(LoginRequiredMixin, PermissionRequiredMixin,SuccessMessage
         context["students"] = [stu for stu in Student.objects.values()]#.all()
         context["subjects"] = [sub for sub in Subject.objects.values()]
         return context
-    #! 順序要換一下，了解form_valid
+    #! 順序要換一下，了解form_valid，會自己自制form
     def form_valid(self, form):
         messages.success(self.request, "This is my success message")
-        print(form)
+        # print(form)
         super().form_valid(form)
         return HttpResponseRedirect(self.get_success_url())
 
@@ -180,6 +196,8 @@ class DeleteGradeView(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
     model = Grade
     success_url = reverse_lazy('app:listGrades')
     template_name = 'app/DeleteGrade.html'
+    # DeleteGradeView is missing the permission_required attribute. Define DeleteGradeView.permission_required, or override DeleteGradeView.get_permission_required().
+    permission_required ="grade.deleteGrade"
 
 
 class ListStudentView(ListView):
@@ -206,7 +224,7 @@ class ListStudentView(ListView):
 class ListStudentView1(ListView):
     paginate_by = PAGINATE_NUM
     model = Student
-    template_name = 'app/Student1.html'
+    template_name = 'app/StudentTable.html'
     context_object_name = "students"
 
 class CreateStudentView(CreateView):
@@ -267,6 +285,8 @@ class ListSubjectView(ListView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["SUBJECTS_API_URL"] = reverse_lazy("app:listSubjects")
+        ordering = self.request.GET.get('ordering', 'id')
+        context['ordering'] = ordering
         return context
 
 

@@ -21,16 +21,28 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    {% block replenishJS %}{% endblock %}
 
     <title>成績管理系統</title>
 </head>
 
 <body>
-    <!-- Boostrap Navbar -->
-    {% comment %} {% block nav %}{% endblock nav %} {% endcomment %}
-    {% include "app/Navbar.html" %}
+    <header>
+        {% include "app/Navbar.html" %}
+        {% if messages %} {% for message in messages %} {{ message }} {% endfor %} {% endif %}
+    </header>
 
-    {% block index %}{% endblock %}
+    <div class="container">
+    {% comment %} {% include "app/Index.html" %} {% endcomment %}
+    {% comment %} {% block index %}{% endblock %} {% endcomment %}
+        {% block content %}{% endblock %}
+    </div>
+    </div>
+
+
+    <footer class="footer">
+        Footer
+    </footer>
 
 </body>
 

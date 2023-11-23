@@ -1,4 +1,5 @@
-{% extends "app/Index.html" %}
+{% extends "app/Base.html" %}
+
 {% load static %}
 
 {% block content %}
@@ -6,68 +7,48 @@
 <a href="{% url 'app:createSubject' %}" class="btn btn-outline-secondary btn-sm">新增科目</a>
 
 <table class="table table-striped" style="width: 90vw;">
-    <table class="table">
-        <thead>
-            <tr>
-                {% comment %} <th scope="col">#</th> {% endcomment %}
-                <th scope="col">科目ID
-                    <button class="btn btn-outline-secondary btn-sm order-btn" data-order="id">排序</button>
-                </th>
-                <th scope="col">科目
-                    <button class="btn btn-outline-secondary btn-sm order-btn" data-order="subjectName">排序</button>
-                </th>
-                <th scope="col">修改科目</th>
-                <th scope="col">刪除科目</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for subject in subjects %}
-            <tr>
-                {% comment %} <td scope="col">{{ subject . pk }}</td> {% endcomment %}
-                <td scope="col">{{ subject.id }}</td>
-                <td scope="col">{{ subject.subjectName }}</td>
-                {% comment %}<td scope="col">
-
-                    <a href="{% url 'app:updateSubjects' pk=subject.pk %}"><button
-                            class="btn btn-outline-secondary btn-sm update-subject-btn">
-                            修改科目</button></a>
-                </td>
-                {% endcomment %}
-
-                <td scope="col">
-                    <a href="#" class="btn btn-outline-secondary btn-sm"
-                        hx-get="{% url 'app:updateSubjects' pk=subject.id %}" hx-trigger="click" hx-target="closest tr"
-                        hx-swap="innerHTML">
-                        修改科目
-                    </a>
-                </td>
-
-
-
-                {% comment %} <td scope="col"><a href="{% url 'app:deleteSubjects' pk=subject.pk %}">
-                        {% endcomment %}
-                        {% comment %} <button class="btn btn-outline-secondary btn-sm delete-subject-btn"></button>
-                        {% endcomment %}
-                <td scope="col">
-                    <a {% comment %} href="{% url 'app:listSubjects' %}" {% endcomment %} href="#"
-                        class="btn btn-outline-secondary btn-sm"
-                        hx-delete="{% url 'app:deleteSubjects' pk=subject.id %}" hx-trigger="click"
-                        hx-target="closest tr" hx-swap="outerHTML">
-                        刪除科目
-                    </a>
-                </td>
-
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <thead>
+        <tr>
+            <th scope="col">
+                科目ID
+                <a href="#" class="btn btn-outline-secondary btn-sm order-btn" id="id-order-btn">id排序</a>
+            </th>
+            <th scope="col">
+                科目
+                <a href="#" class="btn btn-outline-secondary btn-sm order-btn" id="subjectName-order-btn">科目排序</a>
+            </th>
+            <th scope="col">修改科目</th>
+            <th scope="col">刪除科目</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects %}
+        <tr>
+            <td scope="col">{{ subject.id }}</td>
+            <td scope="col">{{ subject.subjectName }}</td>
+            <td scope="col">
+                <a href="#" class="btn btn-outline-secondary btn-sm update-subject-btn"
+                    hx-get="{% url 'app:updateSubjects' pk=subject.id %}" hx-trigger="click" hx-target="closest tr"
+                    hx-swap="innerHTML">
+                    修改科目
+                </a>
+            </td>
+            <td scope="col">
+                <a href="#" class="btn btn-outline-secondary btn-sm" hx-delete="{% url 'app:deleteSubjects' pk=subject.id %}"
+                    hx-trigger="click" hx-target="closest tr" hx-swap="outerHTML">
+                    刪除科目
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 <div class="pagination">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            <li class="page-item"><a class="page-link" href="?page=1&ordering={{ ordering }}">&laquo; first</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&ordering={{ ordering }}">previous</a></li>
         {% endif %}
 
         <li class="page-item disabled">
@@ -77,26 +58,52 @@
         </li>
 
         {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&ordering={{ ordering }}">next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&ordering={{ ordering }}">last &raquo;</a></li>
         {% endif %}
     </ul>
 </div>
 
 {% endblock %}
-    {% comment %} "DELETE /app/subjects/ HTTP/1.1" 405 0 delete method not allow {% endcomment %}
+
 {% block replenishJS %}
     <script src="https://unpkg.com/htmx.org@1.9.2" defer></script>
     <script>
-        document.body.addEventListener("htmx:configRequest", (event) => {
-            event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
-        });
-    </script>
-    <script>
-        let SUBJECTS_API_URL = "{{ SUBJECTS_API_URL }}"
-    </script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const orderBtns = document.querySelectorAll('.order-btn');
+            const tableContainer = document.querySelector('.table tbody');
 
+            orderBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const orderingParam = this.id.replace("-order-btn", "");
+                const currentOrder = this.getAttribute("data-order") || "asc";
+                const newOrder = currentOrder === "asc" ? "desc" : "asc";
+                this.setAttribute("data-order", newOrder);
+
+            fetch(`{% url 'app:listSubjects' %}?page={{ page_obj.number }}&ordering=${newOrder === "desc" ? '-' : ''}${orderingParam}`, {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(data => {
+                //臨時 div，將其 innerHTML 設置為新數據，然後將 tbody 中的內容替換為臨時 div 的內容。這樣，它保留了現有的表結構，並且只更新 tbody 中的行。
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data;
+                tableContainer.innerHTML = data;
+                tableContainer.innerHTML = tempDiv.querySelector('tbody').innerHTML;
+                console.log(data);
+                //$('.order-btn').innerHTML = data;
+                //document.querySelector('.table').innerHTML = data;
+                //tableContainer.innerHTML = data;
+
+            })
+            .catch(error => {
+                    console.error("Error fetching subjects:", error);
+                });
+            });
+        });
+    });
+
+    </script>
 
 
 {% endblock %}
-    {% comment %} text align {% endcomment %}

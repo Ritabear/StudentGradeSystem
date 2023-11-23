@@ -1,16 +1,20 @@
 {% extends "app/Base.html" %}
 
-{% block index %}
-<!-- Our content -->
+
+{% block content %}
 <h1>成績管理系統</h1>
 
 
 
-
-<div class="container">
+{% comment %} <div class="container">
     {% if messages %} {% for message in messages %} {{ message }} {% endfor %} {% endif %}
 
-    {% comment %}
+    {% block replenishJS %}{% endblock %}
+</div> {% endcomment %}
+{% endblock %}
+
+
+ {% comment %}
     <script>
         $(function() {
             $("#search").autocomplete({
@@ -20,7 +24,3 @@
         });
     </script>
     {% endcomment %}
-    {% block content %}{% endblock %}
-    {% block replenishJS %}{% endblock %}
-</div>
-{% endblock %}

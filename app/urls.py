@@ -5,7 +5,9 @@ from django.conf.urls.static import static
 from app import views
 from app.views import ListStudentView,CreateStudentView,UpdateStudentView,DeleteStudentView, \
     ListGradeView,ListSubjectView,DeleteSubjectView,CreateGradeView,UpdateGradeView,DeleteGradeView,UpdateSubjectView
-
+from django.conf.urls import handler403
+# handler403 = 'app.views.custom_permission_denied'
+# handler403 = views.permission_denied
 
 app_name = "app"
 
@@ -13,7 +15,7 @@ urlpatterns = [
     path("", views.getIndex, name="index"),
 
     path("students/", views.ListStudentView.as_view(), name="listStudents"),
-    path("students1/", views.ListStudentView1.as_view(), name="listStudents1"),
+    path("studentsMore/", views.ListStudentView1.as_view(), name="listStudentsMore"),
     path("students/create/", views.CreateStudentView.as_view(), name="createStudent"),
     # path("students/create", views.CreateStudentForm, name="createStudentForm"),
     path("students/update/<int:pk>/", views.UpdateStudentView.as_view(), name="updateStudents"),

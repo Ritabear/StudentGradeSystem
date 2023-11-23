@@ -1,4 +1,5 @@
-{% extends "app/Index.html" %}
+{% extends "app/Base.html" %}
+
 {% load static %}
 
 {% block content %}
@@ -18,8 +19,8 @@
 
 
 <form method="POST" class="form-horizontal" role="form" id="form" action="{% url 'app:updateGrades' pk=grade.pk %}">
-    {% comment %} action={{% url %}} <div class="form-group row"> {% endcomment %}
-    <div class="form-group row">
+    {% comment %} action={{% url %}} <div class="form-group row table-form-group"> {% endcomment %}
+    <div class="form-group row table-form-group">
         <label for="id_student" class="col-sm-1 control-label">學生:</label>
 
         {% comment %} <div class="col-sm-6">
@@ -35,14 +36,13 @@
            <select name="student" required id="id_student" class="form-control">
             <option value="">---------</option>
                 {% for student in students %}
-                {% comment %} {{student}} {% endcomment %}
-                <option value="{{student.id}}"{% if student_id == selected_id %} selected {% endif %}> {{ student.name }} </option>
+                <option value="{{student.id}}" {{ student.name }} </option>
                 {% endfor %}
-                {% comment %} student_id {% endcomment %}
             </select>
         </div>
+    </div>
 
-    <div class="form-group row">
+    <div class="form-group row table-form-group">
         <label for="id_semester" class="col-sm-1 control-label">學期:</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="id_semester" name="semester"
@@ -50,19 +50,19 @@
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row table-form-group">
         <label for="id_subject" class="col-sm-1 control-label">科目:</label>
         <div class="col-sm-6">
             <select name="subject" required id="id_subject" class="form-control">
                 <option value="">---------</option>
                 {% for subject in subjects %}
-                <option value="{{subject.id}}" {% if subuject_id == selected_id %} selected {% endif %}> {{ subject.subjectName }} </option>
+                <option value="{{subject.id}}" > {{ subject.subjectName }} </option>
                 {% endfor %}
             </select>
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row table-form-group">
         <label for="id_grade" class="col-sm-1 control-label">成績:</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="id_grade" name="grade" value="{{ form.grade.value }}">
@@ -71,7 +71,7 @@
 
 
 
-    <div class="form-group">
+    <div class="form-group" style="text-align:center;">
         <button type="submit" class="btn btn-outline-primary" id="update">確認變更</button>
     </div>
 </form>
@@ -80,30 +80,30 @@
 <script>
     $(document).ready(function() {
         $('#form').on('change', function() {
-            let grade = $('#id_grade');
-            let semester = $('#id_semester');
+            let $grade = $('#id_grade');
+            let $semester = $('#id_semester');
             let semesterValue = semester.val();
             let semesterParts = semesterValue.split('-');
             let numericPart = parseInt(semesterParts[0], 10);
 
-            if (grade.val() > 100 || grade.val() < 0 || semesterParts.length !== 2 || numericPart <=
+            if ($grade.val() > 100 || $grade.val() < 0 || semesterParts.length !== 2 || numericPart <=
                 100 || numericPart >= 200) {
-                if (grade.val() > 100 || grade.val() < 0) {
-                    grade.css('borderColor', 'red');
-                    grade.next('.error-message').remove(); // Remove previous error messages
-                    grade.after('<div class="error-message" style="color:red;">請輸入正確的成績</div>');
+                if ($grade.val() > 100 || $grade.val() < 0) {
+                    $grade.css('borderColor', 'red');
+                    $grade.next('.error-message').remove(); // Remove previous error messages
+                    $grade.after('<div class="error-message" style="color:red;">請輸入正確的成績</div>');
                 }
 
                 if (semesterParts.length !== 2 || numericPart <= 100 || numericPart >= 200) {
-                    semester.css('borderColor', 'red');
-                    semester.next('.error-message').remove(); // Remove previous error messages
-                    semester.after('<div class="error-message" style="color:red;">請輸入正確的學期</div>');
+                    $semester.css('borderColor', 'red');
+                    $semester.next('.error-message').remove(); // Remove previous error messages
+                    $semester.after('<div class="error-message" style="color:red;">請輸入正確的學期</div>');
                 }
 
                 $('#update').addClass('disabled');
             } else {
-                grade.css('borderColor', '');
-                semester.css('borderColor', '');
+                $grade.css('borderColor', '');
+                $semester.css('borderColor', '');
                 $('.error-message').remove();
                 $('#update').removeClass('disabled');
             }

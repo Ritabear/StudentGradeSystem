@@ -20,8 +20,9 @@ from app import views
 
 
 urlpatterns = [
+    # 沒有prefix，直接進入app
     path('', views.getHomePage, name='home'),#! homePage 一定要在這邊？
-    # 把app內的urls放入
+    # 把app內的urls放入，prefix為app
     path("app/", include("app.urls")),
 
 

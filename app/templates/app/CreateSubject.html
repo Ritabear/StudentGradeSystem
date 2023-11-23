@@ -1,11 +1,12 @@
 
-{% extends "app/Index.html" %}
+{% extends "app/Base.html" %}
+
 {% load static %}
 {% comment %} <link rel="stylesheet" href="{% static 'css/default.css' %}"> {% endcomment %}
 
 
 {% block content %}
-<form method="POST" action="{% url 'app:createSubject' %}" class="form-horizontal">
+<form method="POST" action="{% url 'app:createSubject' %}" class="form-horizontal" style="text-align:center;">
     {% csrf_token %}
     {% comment %} {{ form.as_p }} {% endcomment %}
 
@@ -21,9 +22,11 @@
         <label for="subjectName" class="col-sm-1 control-label">科目名稱</label>
         <input type="text" class="col-sm-6" id="subjectName" name="subjectName" placeholder="請輸入科目名稱">
     </div>
-    <div class="space-more" style="margin-top: 50px;"></div>
-    <button type="submit" class="btn btn-outline-primary position-absolute top-20 start-50 translate-middle" name="save" >確認</button>
 
+    <div class="space-more ">
+    <button type="submit" class="btn btn-outline-primary " name="save" >
+        確認</button>
+</div>
 
 </form>
 {% endblock %}

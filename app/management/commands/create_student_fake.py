@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from faker import Faker
 
-from app.models import Student
+from app.models import Student, Subject
 
 #! django transaction
 class Command(BaseCommand):
@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument('num', nargs='+', type=int)
 
+    @transaction.atomic
     def handle(self, *args: Any, **options: Any):
         number = options.get('num')[0]   #error: the following arguments are required: num
         # password = make_password('123456')
@@ -28,10 +29,13 @@ class Command(BaseCommand):
                 # 'is_superuser': True,
             }
             try:
-                with transaction.atomic():
-                    Student.objects.create(
-                        **data
-                    )
+                # with transaction.atomic():
+                Student.objects.create(
+                    **data
+                )
+                # Subject.objects.create(
+                #     subjectName=faker.word(),
+                # )
                 # Student.save()
             except Exception as e:
                 print(f"Error: {e}")

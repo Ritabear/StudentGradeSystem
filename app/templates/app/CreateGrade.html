@@ -1,4 +1,4 @@
-{% extends "app/Index.html" %}
+{% extends "app/Base.html" %}
 
 
 {% block content %}
@@ -11,7 +11,7 @@
             {{ form.as_table }}
         </table> {% endcomment %}
         {% for field in form %}
-            <div class="form-group row">
+            <div class="form-group row table-form-group">
                 <label for="{{ field.id_for_label }}" class="col-sm-5 text-end">{{ field.label }}</label>
                 {#直接用field，而不是form_obj.field#}
                 <div class="col-sm-3"> {{ field }}</div>

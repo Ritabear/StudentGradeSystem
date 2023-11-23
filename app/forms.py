@@ -8,6 +8,7 @@ class CreateStudentForm(ModelForm):
         # 這裡的fields是指定要使用的欄位
         fields = "__all__"
 
+
 # class CreateSubjectForm(forms.form):
 class CreateSubjectForm(ModelForm):
     class Meta:
