@@ -62,7 +62,7 @@
             fetch(`{% url 'app:listStudentsMore' %}?page=${page}`)
             .then(response => response.text())
             .then(data => {
-                delay(100).then(() => {
+                delay(1000).then(() => {
                     document.querySelector('#load').style.display = "none";
                     if(data.trim() === ''){
                         reachedEnd = true;

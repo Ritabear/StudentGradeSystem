@@ -1,0 +1,15 @@
+{% extends "Student.html" %}
+{% load static %}
+
+{% block content %}
+    <h2>Confirm Deletion</h2>
+    <h5>Are you sure you want to delete the student: {{ student.name }}?</h5>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    </form>
+    <a href="{% url 'app:list_students' %}" class="btn btn-secondary">Cancel</a>
+{% endblock %}
+
+{% comment %} 怎樣同一頁刪除 {% endcomment %}
+

@@ -36,7 +36,7 @@
            <select name="student" required id="id_student" class="form-control">
             <option value="">---------</option>
                 {% for student in students %}
-                <option value="{{student.id}}" {{ student.name }} </option>
+                <option value="{{student.id}}" {% if oriStudent == student.name  %} selected {% endif %} >{{ student.name }} </option>
                 {% endfor %}
             </select>
         </div>
@@ -56,7 +56,7 @@
             <select name="subject" required id="id_subject" class="form-control">
                 <option value="">---------</option>
                 {% for subject in subjects %}
-                <option value="{{subject.id}}" > {{ subject.subjectName }} </option>
+                <option value="{{subject.id}}" {% if oriSubject == subject.subjectName  %} selected {% endif %} > {{ subject.subjectName }} </option>
                 {% endfor %}
             </select>
         </div>

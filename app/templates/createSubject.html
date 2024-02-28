@@ -1,0 +1,26 @@
+
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+<form method="POST" action="{% url 'app:createSubject' %}">
+    {% csrf_token %}
+    {% comment %} {{ form.as_p }} {% endcomment %}
+
+    {% comment %} {% for subject in subjects %}
+    <td>{{ subject.subjectName }}</td>
+    {% endfor%} {% endcomment %}
+
+    {% comment %} {% for field in form %}
+    <td>{{ field }}</td>
+    {% endfor %} {% endcomment %}
+
+    <div class="form-group">
+        <label for="subjectName">科目名稱</label>
+        <input type="text" class="form-control" id="subjectName" name="subjectName" placeholder="請輸入科目名稱">
+    </div>
+
+
+    <button type="submit" class="btn btn-outline-primary" name="save" >確認</button>
+</form>
+{% endblock %}

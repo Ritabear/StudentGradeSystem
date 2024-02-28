@@ -1,0 +1,20 @@
+{% extends "Index.html" %}
+
+
+{% block content %}
+    <h1>新增成績</h1>
+
+    {% comment %} <form method="post" action="{% url 'app:createStudentForm' %}" enctype="multipart/form-data"> {% endcomment %}
+    <form method="post" action="{% url 'app:createGrade' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+    <div>
+    <button type="submit" value="Save" class="btn btn-primary" value="createGrade">Submit</button>
+    </div>
+
+    </form>
+
+{% endblock %}

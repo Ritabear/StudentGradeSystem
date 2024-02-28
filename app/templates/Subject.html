@@ -1,0 +1,87 @@
+{% extends "Index.html" %}
+{% load static %}
+
+{% block content %}
+
+    <a href="{% url 'app:createSubject' %}" class="btn btn-outline-secondary btn-sm">新增科目</a>
+    <table class="table table-striped" style="width: 90vw;">
+    <table class="table">
+
+    <thead>
+        <tr>
+        {% comment %} <th scope="col">#</th> {% endcomment %}
+        <th scope="col"></th>
+        <th scope="col">科目ID
+            <button class="btn btn-outline-secondary btn-sm order-btn" data-order="id">排序</button>
+        </th>
+        <th scope="col">科目
+            <button class="btn btn-outline-secondary btn-sm order-btn" data-order="subjectName">排序</button>
+        </th>
+        <th scope="col">修改科目</th>
+        <th scope="col">刪除科目</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects %}
+            <tr>
+                <td scope="col"></td>
+                {% comment %} <td scope="col">{{ subject.pk }}</td> {% endcomment %}
+                <td scope="col">{{ subject.id }}</td>
+                <td scope="col">{{ subject.subjectName }}</td>
+                <td scope="col">
+                {% comment %}
+                    <a href="{% url 'app:update_subjects' pk=subject.pk %}"><button class="btn btn-outline-secondary btn-sm update-subject-btn">
+                    修改科目</button></a></td>
+                {% endcomment %}
+
+                <td scope="col">
+                    <a
+                    href="#"
+                    class="btn btn-outline-secondary btn-sm"
+                    hx-get="{% url 'app:update_subjects' pk=subject.id %}"
+                    hx-trigger="click"
+                    hx-target="closest tr"
+                    hx-swap="innerHTML">
+                    修改科目
+                    </a>
+                </td>
+
+
+                {% comment %} <td scope="col"><a href="{% url 'app:delete_subjects' pk=subject.pk %}"> {% endcomment %}
+                    {% comment %} <button class="btn btn-outline-secondary btn-sm delete-subject-btn"></button> {% endcomment %}
+                <td scope="col">
+                    <a
+                    {% comment %} href="{% url 'app:list_subjects' %}" {% endcomment %}
+                    href="#"
+                    class="btn btn-outline-secondary btn-sm"
+                    hx-delete="{% url 'app:delete_subjects' pk=subject.id %}"
+                    hx-trigger="click"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML">
+                    刪除科目
+                    </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
+{% comment %} "DELETE /app/subjects/ HTTP/1.1" 405 0  delete method not allow {% endcomment %}
+{% block replenishJS %}
+<script src="https://unpkg.com/htmx.org@1.9.2" defer></script>
+<script>
+    document.body.addEventListener("htmx:configRequest", (event) => {
+        event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
+    });
+</script>
+<script>
+    let SUBJECTS_API_URL = "{{ SUBJECTS_API_URL }}"
+    {% comment %} '/app/subjects/' {% endcomment %}
+</script>
+<script type="text/javascript" src="{% static 'js/all.js' %}" defer></script>
+
+
+{% endblock %}
+{% comment %} text align {% endcomment %}

@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+    <h1>新增成績</h1>
+
+    {% comment %} <form method="post" action="{% url 'app:createStudentForm' %}" enctype="multipart/form-data"> {% endcomment %}
+    <form method="post" action="{% url 'app:createGrade' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        {% comment %} {% for item in form %}
+        <div class="mb-5">
+        <label for="exampleInputEmail1" class="form-label">名字</label>
+        <input type="text" class="form-control" placeholder="名字" name="name">
+        </div>
+
+        <div class="mb-5">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+
+        <div></div>
+        <div class="mb-5">
+        <label for="exampleInputEmail1" class="form-label">電話號碼</label>
+        <input type="text" class="form-control" placeholder="電話號碼" name="phoneNumber">
+        </div>
+
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    {% endcomment %}
+    <div>
+    <button type="submit" value="Save" class="btn btn-primary" value="createGrade">Submit</button>
+    </div>
+
+    </form>
+
+{% endblock %}

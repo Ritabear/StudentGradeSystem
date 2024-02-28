@@ -162,8 +162,6 @@ class UpdateGradeView(LoginRequiredMixin, PermissionRequiredMixin,SuccessMessage
         # if self.raise_exception or self.request.user.is_authenticated:
         #     return redirect('app:index')
 
-
-
         # #     raise PermissionDenied(self.get_permission_denied_message())
         # return redirect_to_login(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
 
@@ -180,8 +178,9 @@ class UpdateGradeView(LoginRequiredMixin, PermissionRequiredMixin,SuccessMessage
         context = super().get_context_data(**kwargs)
         # print(self.kwargs)
         # print(context)
-        # context["oriStudent"] = Student.objects.filter()
-        # context["oriSubject"] = Subject.objects.filter()
+        context["oriStudent"] = str(self.object.student.name)
+        context["oriSubject"] = str(self.object.subject.subjectName)
+
         context["students"] = [stu for stu in Student.objects.values()]#.all()
         context["subjects"] = [sub for sub in Subject.objects.values()]
         return context
@@ -302,6 +301,7 @@ class UpdateSubjectView(UpdateView):
 
 # ????
 class DeleteSubjectView(LoginRequiredMixin, PermissionRequiredMixin,DeleteView):
+    permission_required = "subject.deleteSubject"
     model = Subject
     # fields = "__all__"
     # fields = "id"

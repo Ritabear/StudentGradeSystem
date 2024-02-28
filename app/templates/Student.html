@@ -1,0 +1,43 @@
+{% extends "Index.html" %}
+{% load static %}
+
+{% block content %}
+
+    <a href="{% url 'app:createStudent' %}" class="btn btn-outline-secondary btn-sm">新增學生</a>
+    <table class="table">
+
+    <thead>
+        <tr>
+        {% comment %} <th scope="col">#</th> {% endcomment %}
+        <th scope="col"></th>
+        <th scope="col">學生ID</th>
+        <th scope="col">姓名</th>
+        <th scope="col">電話</th>
+        <th scope="col">email</th>
+        <th scope="col">更改</th>
+        <th scope="col">刪除</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+            <tr>
+                <td scope="col"></td>
+                <td scope="col">{{ student.id }}</td>
+                <td scope="col">{{ student.name }}</td>
+                <td scope="col">{{ student.phoneNumber }}</td>
+                <td scope="col">{{ student.email }}</td>
+                <td scope="col"><a href="{% url 'app:update_students' pk=student.pk %}"><button class="btn btn-outline-secondary btn-sm update-student-btn">
+                    修改資料</button></a></td>
+
+                <td scope="col"><a href="{% url 'app:delete_students' pk=student.pk %}"><button
+                    class="btn btn-outline-secondary btn-sm delete-grade-btn">
+                    刪除學生
+                </button></a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
+
+{% comment %} {% block script %} {% endcomment %}
+{% comment %} text align {% endcomment %}

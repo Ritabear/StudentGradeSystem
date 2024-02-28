@@ -74,34 +74,34 @@
             const tableContainer = document.querySelector('.table tbody');
 
             orderBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                const orderingParam = this.id.replace("-order-btn", "");
-                const currentOrder = this.getAttribute("data-order") || "asc";
-                const newOrder = currentOrder === "asc" ? "desc" : "asc";
-                this.setAttribute("data-order", newOrder);
+                btn.addEventListener('click', function () {
+                    const orderingParam = this.id.replace("-order-btn", "");
+                    const currentOrder = this.getAttribute("data-order") || "asc";
+                    const newOrder = currentOrder === "asc" ? "desc" : "asc";
+                    this.setAttribute("data-order", newOrder);
 
-            fetch(`{% url 'app:listSubjects' %}?page={{ page_obj.number }}&ordering=${newOrder === "desc" ? '-' : ''}${orderingParam}`, {
-                method: 'GET'
-            })
-            .then(response => response.text())
-            .then(data => {
-                //臨時 div，將其 innerHTML 設置為新數據，然後將 tbody 中的內容替換為臨時 div 的內容。這樣，它保留了現有的表結構，並且只更新 tbody 中的行。
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = data;
-                tableContainer.innerHTML = data;
-                tableContainer.innerHTML = tempDiv.querySelector('tbody').innerHTML;
-                console.log(data);
-                //$('.order-btn').innerHTML = data;
-                //document.querySelector('.table').innerHTML = data;
-                //tableContainer.innerHTML = data;
+                    fetch(`{% url 'app:listSubjects' %}?page={{ page_obj.number }}&ordering=${newOrder === "desc" ? '-' : ''}${orderingParam}`, {
+                        method: 'GET'
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        //臨時 div，將其 innerHTML 設置為新數據，然後將 tbody 中的內容替換為臨時 div 的內容。這樣，它保留了現有的表結構，並且只更新 tbody 中的行。
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = data;
+                        tableContainer.innerHTML = data;
+                        tableContainer.innerHTML = tempDiv.querySelector('tbody').innerHTML;
+                        console.log(data);
+                        //$('.order-btn').innerHTML = data;
+                        //document.querySelector('.table').innerHTML = data;
+                        //tableContainer.innerHTML = data;
 
-            })
-            .catch(error => {
-                    console.error("Error fetching subjects:", error);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching subjects:", error);
+                    });
                 });
             });
         });
-    });
 
     </script>
 

@@ -1,0 +1,62 @@
+
+
+<td>
+<form method="POST" action="{% url 'app:update_subjects' pk=subject.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-outline-primary">確認變更</button>
+</form>
+</td>
+
+
+
+
+{% comment %} <td>
+<form method="POST" action="{% url 'app:update_subjects' pk=subject.pk %}">
+    {% csrf_token %}
+    <tr>
+        <td>科目名稱</td>
+        <td><a
+                    href="#"
+                    class="btn btn-outline-secondary btn-sm"
+                    hx-get="{% url 'app:update_subjects' pk=subject.id %}"
+                    hx-trigger="click"
+                    hx-target="closest tr"
+                    hx-swap="innerHTML">
+                    修改科目jksldfjklwejrklfjwekl
+                    {{ form.subject_name }}</a></td>
+    </tr>
+    <button type="submit" class="btn btn-outline-primary">確認變更</button>
+    </div>
+</form>
+</td> {% endcomment %}
+
+
+{% comment %}
+<td>
+    <th>科目名稱</th>
+<a
+    href="#"
+    class="btn btn-outline-secondary btn-sm"
+    hx-get="{% url 'app:update_subjects' pk=subject.id %}"
+    hx-trigger="click"
+    hx-target="closest tr"
+    hx-swap="innerHTML">
+    xdmfklsdmfklwes
+    {{ form.subject_name }}</a></td>
+</td> {% endcomment %}
+
+
+{% comment %} for class view 需要extend static block 也少了action !!!!   {% endcomment %}
+{% extends "Index.html" %}
+{% load static %}
+
+{% block content %}
+    <td>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-primary">確認變更</button>
+    </form>
+    </td>
+{% endblock %}

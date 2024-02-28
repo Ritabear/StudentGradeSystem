@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>成績管理系統</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+
+  {% load static %}
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href={% static "fonts/icomoon/style.css" %}>
+  <link rel="stylesheet" href={% static "css/owl.carousel.min.css"%}>
+  <link rel="stylesheet" href={% static "css/bootstrap.min.css"%}>
+  <link rel="stylesheet" href={% static "css/style.css"%}>
+
+
+  {% comment %} {% block extrastyle %}{% endblock %}
+  jquery
+  {% endcomment %}
+</head>
+
+<body>
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icon-close2 js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+
+  <div class="top-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <a href="#" class=""><span class="mr-2  icon-envelope-open-o"></span> <span
+              class="d-none d-md-inline-block">成績管理系統</span></a>
+          <span class="mx-md-2 d-inline-block"></span>
+          <a href="#" class=""><span class="mr-2  icon-phone"></span> <span
+              class="d-none d-md-inline-block">1+ (234) 5678 9101</span></a>
+          <div class="float-right">
+            <a href="#" class=""><span class="mr-2  icon-twitter"></span> <span
+                class="d-none d-md-inline-block">Twitter</span></a>
+            <span class="mx-md-2 d-inline-block"></span>
+            <a href="#" class=""><span class="mr-2  icon-facebook"></span> <span
+                class="d-none d-md-inline-block">Facebook</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+
+    <div class="container">
+      <div class="row align-items-center position-relative">
+
+        {% comment %} 首頁圖片 {% endcomment %}
+        <div class="site-logo">
+          {% comment %} <a href={% url "app:home"%} class="text-black"><span class="text-primary">Brand</a> {% endcomment %}
+          <a href={% url "app:index"%} class="text-black"><span class="text-primary">System</a>
+        </div>
+
+        <div class="col-12">
+          <nav class="site-navigation text-right ml-auto " role="navigation">
+
+            <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
+              <li><a href="#home-section" class="nav-link">Home</a></li>
+
+              <li><a href="{% url 'app:list_grades' %}" class="nav-link">所有成績</a></li>
+
+              <li><a href="{% url 'app:list_subjects' %}" class="nav-link">所有科目</a></li>
+
+              <li><a href="{% url 'app:list_students' %}" class="nav-link">所有學生</a></li>
+
+              <li><a href="#testimonials-section" class="nav-link">搜尋</a></li>
+
+              <li class="has-children">
+                <a href="#about-section" class="nav-link"> 權限 </a>
+                <ul class="dropdown arrow-top">
+                  <li><a href="#team-section" class="nav-link">註冊</a></li>
+                  <li><a href="#pricing-section" class="nav-link">登入</a></li>
+                  <li><a href="#faq-section" class="nav-link">Q&A</a></li>
+                  <li class="has-children">
+                    <a href="#">More Links</a>
+                    <ul class="dropdown">
+                      <li><a href="#">Menu One</a></li>
+                      <li><a href="#">Menu Two</a></li>
+                      <li><a href="#">Menu Three</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="toggle-button d-inline-block d-lg-none"><a href="#"
+            class="site-menu-toggle py-5 js-menu-toggle text-black"><span class="icon-menu h3"></span></a>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  {% comment %} <div class="hero" style="background-image: url('images/hero_1.jpg');"></div> {% endcomment %}
+
+
+  {% comment %} 一定要加才能繼承content {% endcomment %}
+  {% block content %}{% endblock %}
+
+  {% comment %} <div class="hero" style="background-image: {% static '/images/hero_1.jpg' %}");"></div>
+  {% endcomment %}
+
+  <script src={% static "/js/jquery-3.3.1.min.js" %}></script>
+  <script src={% static "/js/popper.min.js" %}></script>
+  <script src={% static "/js/bootstrap.min.js" %}></script>
+  <script src={% static "/js/main.js" %}></script>
+  {% block replenishJS %}{% endblock %}
+
+</body>
+
+</html>

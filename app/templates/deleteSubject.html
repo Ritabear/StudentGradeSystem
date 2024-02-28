@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+    <h2>Confirm Deletion</h2>
+    <h5>Are you sure you want to delete the subject: {{ subject.subjectName }} ?</h5>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    </form>
+    <a href="{% url 'app:list_subjects' %}" class="btn btn-secondary">Cancel</a>
+{% endblock %}
+
+{% comment %} 怎樣同一頁刪除 {% endcomment %}
+
+{% comment %} {% extends "index.html" %}
+{% load static %}
+
+{% block title %}删除科目{% endblock %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-primary">確認刪除</button>
+    </form>
+{% endblock %} {% endcomment %}

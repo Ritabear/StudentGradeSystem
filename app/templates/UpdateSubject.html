@@ -1,0 +1,10 @@
+
+
+
+<td>
+<form method="POST" action="{% url 'app:update_subjects' pk=subject.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-outline-primary">確認變更</button>
+</form>
+</td>
